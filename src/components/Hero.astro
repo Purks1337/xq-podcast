@@ -73,14 +73,41 @@
             <div class="cam-indicator">3x CAM · 60 FPS</div>
           </div>
 
-          <!-- Главное фото локации студии -->
+          <!-- Главное видео локации студии -->
           <div class="poster-image-box">
-            <img
-              src="/assets/photos/lounge/DSC02584.jpg"
-              alt="Студия подкастов Хвалите Quality — локация Лаундж с ретро-ТВ"
-              class="poster-img"
-              loading="eager"
-            />
+            <!-- Фоновое видео Kinescope -->
+            <div class="poster-video-wrap">
+              <iframe
+                id="hero-kinescope-video"
+                src="https://kinescope.io/embed/pxwo5ksSHJKq9wNUP3vzQn?autoplay=1&muted=1&loop=1&controls=0&playsinline=1"
+                title="Студия подкастов Хвалите Quality"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allowfullscreen
+                class="poster-video-iframe"
+              ></iframe>
+            </div>
+
+            <!-- Заглушка с фото, помехами и лоадером до старта видео -->
+            <div class="poster-placeholder" id="hero-placeholder">
+              <img
+                src="/assets/photos/lounge/DSC02584.jpg"
+                alt="Студия подкастов Хвалите Quality"
+                class="placeholder-photo"
+              />
+              <div class="tv-noise-layer"></div>
+              <div class="tv-scanlines-layer"></div>
+              <div class="tv-scanbeam"></div>
+
+              <div class="poster-loader">
+                <div class="loader-spin-ring">
+                  <span class="loader-dot"></span>
+                </div>
+                <div class="loader-details">
+                  <span class="loader-label">ПОДКЛЮЧЕНИЕ К ПОТОКУ</span>
+                  <span class="loader-status">SIGNAL SYNC · 4K UHD</span>
+                </div>
+              </div>
+            </div>
 
             <!-- Плавающий бейдж с гарантией срока -->
             <div class="sticker-badge sticker-badge--days">
@@ -322,16 +349,166 @@
     background: #222;
   }
 
-  .poster-img {
+  .poster-video-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111 url('/assets/photos/lounge/DSC02584.jpg') center/cover no-repeat;
+  }
+
+  .poster-video-iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* 16:9 видео заполняет 4:3 окно ровно по высоте с центрированной обрезкой по бокам */
+    width: calc(100% * (4 / 3) + 4px);
+    height: 100%;
+    transform: translate(-50%, -50%);
+    border: none;
+    pointer-events: none;
+  }
+
+  /* Заглушка с фото, помехами и лоадером */
+  .poster-placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.65s ease;
+  }
+
+  .poster-placeholder.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .placeholder-photo {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease;
+    filter: contrast(1.1) brightness(0.85) saturate(1.1);
   }
 
-  .hero-card-poster:hover .poster-img {
-    transform: scale(1.03);
+  /* Слой шума / статических помех */
+  .tv-noise-layer {
+    position: absolute;
+    inset: -20px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.35'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    opacity: 0.55;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: tvStaticShift 0.2s steps(2) infinite;
+  }
+
+  @keyframes tvStaticShift {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(-3px, 2px); }
+    100% { transform: translate(2px, -3px); }
+  }
+
+  /* Горизонтальные телевизионные сканлайны (CRT строки) */
+  .tv-scanlines-layer {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.4) 0px,
+      rgba(0, 0, 0, 0.4) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    opacity: 0.75;
+    pointer-events: none;
+  }
+
+  /* Пробегающая полоса синхронизации/помех */
+  .tv-scanbeam {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 25%;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 204, 0, 0.15) 85%,
+      transparent 100%
+    );
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: scanbeamRoll 4s linear infinite;
+  }
+
+  @keyframes scanbeamRoll {
+    0% { top: -30%; }
+    100% { top: 130%; }
+  }
+
+  /* Брутальный лоадер подключения потока */
+  .poster-loader {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(18, 18, 18, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid var(--color-dark);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0px var(--color-dark);
+  }
+
+  .loader-spin-ring {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--color-gold-bright);
+    border-right-color: var(--color-gold-bright);
+    border-radius: 50%;
+    animation: loaderSpin 0.8s linear infinite;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  @keyframes loaderSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loader-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .loader-label {
+    font-family: var(--font-accent);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+  }
+
+  .loader-status {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--color-gold-bright);
+    letter-spacing: 0.08em;
   }
 
   /* Стикеры */
@@ -444,3 +621,45 @@
     white-space: nowrap;
   }
 </style>
+
+<script>
+  function initHeroVideoSync() {
+    const placeholder = document.getElementById('hero-placeholder');
+    const iframe = document.getElementById('hero-kinescope-video') as HTMLIFrameElement | null;
+
+    if (!placeholder || !iframe) return;
+
+    let isRevealed = false;
+    const revealVideo = () => {
+      if (isRevealed) return;
+      isRevealed = true;
+      placeholder.classList.add('is-hidden');
+    };
+
+    // Слушаем событие завершения базовой загрузки iframe
+    iframe.addEventListener('load', () => {
+      // 800мс буфер, чтобы плеер Kinescope успел запустить первый кадр потока
+      setTimeout(revealVideo, 800);
+    });
+
+    // Слушаем postMessage-события от плеера Kinescope
+    window.addEventListener('message', (event) => {
+      try {
+        const payload = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (payload) {
+          const evt = payload.event || payload.type;
+          if (evt === 'playing' || evt === 'timeupdate' || evt === 'ready') {
+            revealVideo();
+          }
+        }
+      } catch (_) {}
+    });
+
+    // Страховочный таймаут: при медленном соединении показываем плеер максимум через 3.5 сек
+    setTimeout(revealVideo, 3500);
+  }
+
+  // Запуск при старте и поддержке навигации
+  initHeroVideoSync();
+  document.addEventListener('astro:page-load', initHeroVideoSync);
+</script>

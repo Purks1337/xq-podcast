@@ -1,0 +1,347 @@
+---
+// Lightbox.astro — Полноэкранный просмотр фотографий студии
+---
+
+<dialog id="photoLightbox" class="lightbox-dialog" aria-label="Просмотр фотографии">
+  <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+  
+  <div class="lightbox-container">
+    <!-- Верхняя панель управления -->
+    <div class="lightbox-topbar">
+      <div class="lightbox-counter" id="lightboxCounter">
+        <span class="counter-curr">01</span>
+        <span class="counter-sep">/</span>
+        <span class="counter-total">14</span>
+      </div>
+      
+      <div class="lightbox-caption" id="lightboxCaption">Название фото</div>
+
+      <button type="button" class="lightbox-btn-close" id="lightboxCloseBtn" aria-label="Закрыть (Esc)">
+        <span class="close-icon">✕</span>
+        <span class="close-hint">ESC</span>
+      </button>
+    </div>
+
+    <!-- Основная область с изображением и стрелками -->
+    <div class="lightbox-stage">
+      <button type="button" class="lightbox-arrow lightbox-arrow--prev" id="lightboxPrevBtn" aria-label="Предыдущее фото (Стрелка влево)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="lightbox-image-wrap" id="lightboxImageWrap">
+        <img src="" alt="" id="lightboxMainImg" class="lightbox-image" />
+      </div>
+
+      <button type="button" class="lightbox-arrow lightbox-arrow--next" id="lightboxNextBtn" aria-label="Следующее фото (Стрелка вправо)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Подсказка по навигации снизу -->
+    <div class="lightbox-bottom-hints">
+      <span>Используйте стрелки ← → на клавиатуре или кнопки для перелистывания</span>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .lightbox-dialog {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border: none;
+    background: transparent;
+    color: #FFFFFF;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+  }
+
+  .lightbox-dialog[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: lbFadeIn 0.25s ease-out forwards;
+  }
+
+  @keyframes lbFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(18, 18, 18, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .lightbox-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 24px;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 768px) {
+    .lightbox-container {
+      padding: 24px 36px;
+    }
+  }
+
+  /* Верхняя панель */
+  .lightbox-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 48px;
+  }
+
+  .lightbox-counter {
+    font-family: var(--font-mono, monospace);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--color-gold-bright, #D4A54C);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    letter-spacing: 0.08em;
+  }
+
+  .counter-sep {
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 4px;
+  }
+
+  .lightbox-caption {
+    font-family: var(--font-accent, sans-serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: #E4E3DE;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 50%;
+  }
+
+  .lightbox-btn-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1B1B1B;
+    border: 2px solid var(--color-gold-bright, #D4A54C);
+    color: #FFFFFF;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0px var(--color-gold-bright, #D4A54C);
+  }
+
+  .lightbox-btn-close:hover {
+    background: var(--color-gold-bright, #D4A54C);
+    color: #1B1B1B;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px #000;
+  }
+
+  .close-hint {
+    font-size: 10px;
+    opacity: 0.7;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .lightbox-btn-close:hover .close-hint {
+    background: rgba(0, 0, 0, 0.2);
+    color: #1B1B1B;
+  }
+
+  /* Сцена просмотра */
+  .lightbox-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    gap: 16px;
+    min-height: 0;
+  }
+
+  .lightbox-image-wrap {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    user-select: none;
+  }
+
+  /* Стрелки навигации */
+  .lightbox-arrow {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #1B1B1B;
+    border: 2px solid var(--color-gold-bright, #D4A54C);
+    color: var(--color-gold-bright, #D4A54C);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0px #000;
+    z-index: 5;
+  }
+
+  .lightbox-arrow:hover {
+    background: var(--color-gold-bright, #D4A54C);
+    color: #1B1B1B;
+    transform: scale(1.08);
+  }
+
+  .lightbox-arrow:active {
+    transform: scale(0.96);
+  }
+
+  @media (max-width: 640px) {
+    .lightbox-arrow {
+      width: 42px;
+      height: 42px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .lightbox-arrow--prev { left: 8px; }
+    .lightbox-arrow--next { right: 8px; }
+    .lightbox-arrow:hover { transform: translateY(-50%) scale(1.08); }
+    .lightbox-caption { display: none; }
+  }
+
+  /* Нижняя строка */
+  .lightbox-bottom-hints {
+    text-align: center;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+    padding-top: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 640px) {
+    .lightbox-bottom-hints { display: none; }
+  }
+</style>
+
+<script>
+  let currentPhotos: { src: string; title: string }[] = [];
+  let currentIndex = 0;
+
+  const dialog = document.getElementById('photoLightbox') as HTMLDialogElement | null;
+  const backdrop = document.getElementById('lightboxBackdrop');
+  const mainImg = document.getElementById('lightboxMainImg') as HTMLImageElement | null;
+  const captionEl = document.getElementById('lightboxCaption');
+  const counterCurr = document.querySelector('.counter-curr');
+  const counterTotal = document.querySelector('.counter-total');
+  const closeBtn = document.getElementById('lightboxCloseBtn');
+  const prevBtn = document.getElementById('lightboxPrevBtn');
+  const nextBtn = document.getElementById('lightboxNextBtn');
+
+  function updateLightboxView() {
+    if (!currentPhotos.length || !mainImg) return;
+    const photo = currentPhotos[currentIndex];
+    
+    // Плавная смена фото
+    mainImg.style.opacity = '0.5';
+    mainImg.src = photo.src;
+    mainImg.alt = photo.title;
+    
+    mainImg.onload = () => {
+      if (mainImg) mainImg.style.opacity = '1';
+    };
+
+    if (captionEl) captionEl.textContent = photo.title;
+    if (counterCurr) {
+      counterCurr.textContent = String(currentIndex + 1).padStart(2, '0');
+    }
+    if (counterTotal) {
+      counterTotal.textContent = String(currentPhotos.length).padStart(2, '0');
+    }
+  }
+
+  function nextPhoto() {
+    if (!currentPhotos.length) return;
+    currentIndex = (currentIndex + 1) % currentPhotos.length;
+    updateLightboxView();
+  }
+
+  function prevPhoto() {
+    if (!currentPhotos.length) return;
+    currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+    updateLightboxView();
+  }
+
+  function closeLightbox() {
+    if (dialog && dialog.open) {
+      dialog.close();
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Экспорт функции в глобальный window
+  (window as any).openLightbox = function(photos: { src: string; title: string }[], index: number = 0) {
+    if (!dialog || !photos || !photos.length) return;
+    currentPhotos = photos;
+    currentIndex = index;
+    updateLightboxView();
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+  };
+
+  // Слушатели событий
+  closeBtn?.addEventListener('click', closeLightbox);
+  backdrop?.addEventListener('click', closeLightbox);
+  prevBtn?.addEventListener('click', (e) => { e.stopPropagation(); prevPhoto(); });
+  nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); nextPhoto(); });
+
+  window.addEventListener('keydown', (e) => {
+    if (!dialog || !dialog.open) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextPhoto();
+    if (e.key === 'ArrowLeft') prevPhoto();
+  });
+</script>
