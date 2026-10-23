@@ -9,6 +9,6 @@
     "astro": "ASTRO_TELEMETRY_DISABLED=1 astro"
   },
   "dependencies": {
-    "astro": "^5.4.1"
+    "astro": "^7.4.2"
   }
 }
