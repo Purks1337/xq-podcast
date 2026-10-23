@@ -1,16 +1,24 @@
 ---
-// Welcome to Astro!
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import PhotoGallery from '../components/PhotoGallery.astro';
+import Pricing from '../components/Pricing.astro';
+import Cases from '../components/Cases.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import BookingModal from '../components/BookingModal.astro';
 ---
 
-<html lang="ru">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Хвалите — Студия подкастов в Екатеринбурге</title>
-	</head>
-	<body>
-		<h1>Студия подкастов в Екатеринбурге</h1>
-	</body>
-</html>
+<Layout title="ХВАЛИТЕ QUALITY — Студия подкастов в Екатеринбурге">
+  <Header />
+  <main>
+    <Hero />
+    <PhotoGallery />
+    <Pricing />
+    <Cases />
+    <Contacts />
+  </main>
+  <Footer />
+  <BookingModal />
+</Layout>

@@ -1,0 +1,224 @@
+---
+// Footer.astro — Футер студии ХВАЛИТЕ QUALITY
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <!-- Логотип со знаком и буквами -->
+      <a href="/" class="footer-logo">
+        <div class="footer-star">
+          <img src="/assets/logo/star-monogram.svg" alt="Звезда" width="34" height="34" />
+        </div>
+        <div class="footer-brand">
+          <span class="footer-name">ХВАЛИТЕ</span>
+          <span class="footer-badge">QUALITY</span>
+        </div>
+      </a>
+
+      <!-- Телефон -->
+      <div class="footer-phone-wrap">
+        <a href="tel:+79923410520" class="footer-phone">+7 992 341-05-20</a>
+        <span class="footer-city">г. Екатеринбург, ул. Ботаническая 19</span>
+      </div>
+
+      <!-- Кнопка «Записать подкаст» -->
+      <div class="footer-action">
+        <button type="button" class="btn-brutal btn-gold" data-open-booking>
+          <span>🎙</span>
+          <span>Записать подкаст</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Разделитель и нижняя строка -->
+    <div class="footer-bottom">
+      <p class="copyright">
+        © {new Date().getFullYear()} Студия подкастов «ХВАЛИТЕ QUALITY». Все права защищены.
+      </p>
+      <div class="footer-links">
+        <a href="#privacy" class="footer-link" id="privacyLink">Политика конфиденциальности</a>
+        <span class="dot-sep">·</span>
+        <a href="https://quality-media.ru" target="_blank" rel="noopener noreferrer" class="footer-link">quality-media.ru</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка политики конфиденциальности -->
+  <dialog id="privacyModal" class="privacy-modal">
+    <div class="privacy-modal-card">
+      <div class="privacy-modal-head">
+        <h3>Политика конфиденциальности</h3>
+        <button type="button" class="privacy-close" id="closePrivacyBtn">✕</button>
+      </div>
+      <div class="privacy-modal-body">
+        <p>Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных и меры по обеспечению безопасности данных студии «ХВАЛИТЕ QUALITY».</p>
+        <p>1. Мы собираем контактные данные (имя, номер телефона, Telegram) исключительно для связи с вами по вопросам бронирования студии и консультаций.</p>
+        <p>2. Данные не передаются третьим лицам.</p>
+      </div>
+    </div>
+  </dialog>
+</footer>
+
+<style>
+  .site-footer {
+    background: #09090A;
+    border-top: 2px solid #222;
+    padding: 48px 0 32px;
+    color: #FFFFFF;
+  }
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  @media (min-width: 768px) {
+    .footer-top {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #FFFFFF;
+  }
+  .footer-star {
+    width: 36px;
+    height: 36px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-name {
+    font-family: var(--font-accent);
+    font-size: 20px;
+    font-weight: 900;
+    color: #FFFFFF;
+  }
+  .footer-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    background: var(--color-gold-bright);
+    color: var(--color-dark);
+    padding: 2px 7px;
+    border-radius: var(--radius-pill);
+  }
+  .footer-phone-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .footer-phone {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 800;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-phone:hover { color: var(--color-gold-bright); }
+  .footer-city {
+    font-size: 12px;
+    color: #888;
+  }
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 24px;
+    font-size: 12px;
+    color: #777;
+  }
+  @media (min-width: 768px) {
+    .footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .footer-link {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-link:hover { color: #FFF; }
+  .dot-sep { color: #444; }
+  .privacy-modal {
+    border: none;
+    background: transparent;
+    padding: 20px;
+    max-width: 580px;
+    margin: auto;
+  }
+  .privacy-modal::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+  }
+  .privacy-modal-card {
+    background: #1B1B1B;
+    color: #FFF;
+    border: 2px solid #333;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  }
+  .privacy-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 12px;
+  }
+  .privacy-modal-head h3 {
+    font-family: var(--font-accent);
+    font-size: 18px;
+    color: #FFF;
+  }
+  .privacy-close {
+    color: #FFF;
+    font-size: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .privacy-modal-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #AAA;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+</style>
+
+<script>
+  const privacyLink = document.getElementById('privacyLink');
+  const privacyModal = document.getElementById('privacyModal') as HTMLDialogElement | null;
+  const closePrivacyBtn = document.getElementById('closePrivacyBtn');
+
+  privacyLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    privacyModal?.showModal();
+  });
+  closePrivacyBtn?.addEventListener('click', () => {
+    privacyModal?.close();
+  });
+  privacyModal?.addEventListener('click', (e) => {
+    if (e.target === privacyModal) privacyModal.close();
+  });
+</script>

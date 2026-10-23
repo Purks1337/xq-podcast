@@ -1,0 +1,439 @@
+---
+// Pricing.astro — Прайс-лист студии ХВАЛИТЕ QUALITY
+const singlePacks = [
+  {
+    num: '01',
+    name: 'СТАРТ',
+    tag: 'Попробовать формат',
+    price: '20 900 ₽',
+    oldPrice: '26 500 ₽',
+    save: '5 600 ₽',
+    popular: false,
+    features: ['2 часа записи в студии', 'Съемка на 2 камеры в 4K', 'Оператор и звукорежиссёр', 'Монтаж выпуска до 60 мин', 'Готовность 2 рабочих дня']
+  },
+  {
+    num: '02',
+    name: 'ПОД КЛЮЧ',
+    tag: 'ХИТ ПРОДАЖ',
+    price: '35 900 ₽',
+    oldPrice: '44 800 ₽',
+    save: '8 900 ₽',
+    popular: true,
+    features: ['2 часа записи в студии', 'Съемка на 3 камеры в 4K', 'Чистовой монтаж до 60 мин', '5 Reels / Shorts с обложками', 'Дизайнерская обложка выпуска', 'Динамичный видеотизер', 'Готовность 2 рабочих дня']
+  },
+  {
+    num: '03',
+    name: 'КОНТЕНТ НА МЕСЯЦ',
+    tag: 'Для экспертов и школ',
+    price: '76 900 ₽',
+    oldPrice: '96 100 ₽',
+    save: '19 200 ₽',
+    popular: false,
+    features: ['4 часа записи в студии', 'Съемка на 3 камеры в 4K', '2 выпуска с монтажом и обложками', '15 рилс с обложками (контент-план)', 'Готовность 2 рабочих дня']
+  },
+  {
+    num: '04',
+    name: 'КОРПОРАТИВНЫЙ',
+    tag: 'HR-бренд и бизнес',
+    price: '69 900 ₽',
+    oldPrice: '86 900 ₽',
+    save: '17 000 ₽',
+    popular: false,
+    features: ['2 часа записи, 3 камеры 4K', 'Грим на 3 человек перед записью', 'Монтаж с инфографикой и 3D-интро', '5 рилс и обложка выпуска', 'Дистрибуция на всех подкаст-платформах']
+  }
+];
+
+const subs = [
+  {
+    num: '01',
+    name: 'СТАРТ',
+    rate: '2 выпуска в месяц',
+    price: '39 000 ₽ / мес',
+    perEp: '19 500 ₽ / выпуск',
+    save: '8 800 ₽ / мес',
+    features: ['2 готовых выпуска подкаста', '4 рилс для соцсетей', 'Фиксация дня и тайм-слота', 'Срок от 3 месяцев']
+  },
+  {
+    num: '02',
+    name: 'РЕГУЛЯРНЫЙ',
+    rate: 'Каждую неделю (4 выпуска/мес)',
+    price: '78 000 ₽ / мес',
+    perEp: '19 500 ₽ / выпуск',
+    save: '17 600 ₽ / мес',
+    popular: true,
+    features: ['4 готовых выпуска (еженедельный выход)', '8 рилс для продвижения', 'Фиксация дня и времени записи', 'Срок от 3 месяцев']
+  },
+  {
+    num: '03',
+    name: 'БРЕНД',
+    rate: 'Максимальный продакшн',
+    price: '118 000 ₽ / мес',
+    perEp: '29 500 ₽ / выпуск',
+    save: '25 600 ₽ / мес',
+    features: ['4 выпуска уровня «Под ключ»', '20 рилс в месяц (по 5 к выпуску)', '4 дизайнерские обложки', '4 видеотизера к каждому выпуску', 'Срок от 3 месяцев']
+  }
+];
+---
+
+<section class="pricing-section" id="prices">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">
+        <span>03 · СТОИМОСТЬ</span>
+        <span class="tag-star">★</span>
+      </div>
+      <h2 class="section-title">Цены на съёмку подкастов</h2>
+      <div class="guarantee-badge">
+        <span class="guarantee-icon">⚡</span>
+        <span>Готовый выпуск через 2 рабочих дня</span>
+      </div>
+
+      <!-- Переключатель: Разовые / Абонементы -->
+      <div class="pricing-toggle-wrap">
+        <div class="pricing-toggle" role="tablist">
+          <button type="button" class="toggle-btn is-active" data-price-tab="single" role="tab">
+            <span>Разовые пакеты</span>
+          </button>
+          <button type="button" class="toggle-btn" data-price-tab="sub" role="tab">
+            <span>Абонементы</span>
+            <span class="discount-pill">скидка до 25 600 ₽/мес</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Разовые пакеты -->
+    <div class="pricing-grid is-active" id="pricing-single">
+      {singlePacks.map((item) => (
+        <div class={`price-card ${item.popular ? 'price-card--featured' : ''}`}>
+          {item.popular && <div class="card-ribbon">ХИТ ПРОДАЖ</div>}
+          <div class="card-top">
+            <span class="card-num">№{item.num}</span>
+            <span class="card-tag">{item.tag}</span>
+          </div>
+          <h3 class="card-title">{item.name}</h3>
+          
+          <div class="card-pricing">
+            <div class="price-main">{item.price}</div>
+            <div class="price-meta">
+              <span class="price-old">{item.oldPrice}</span>
+              <span class="price-save">Экономия {item.save}</span>
+            </div>
+          </div>
+
+          <ul class="features-list">
+            {item.features.map((feat) => (
+              <li>
+                <span class="feat-check">✓</span>
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            type="button"
+            class={`btn-brutal ${item.popular ? 'btn-gold' : 'btn-white'} card-btn`}
+            data-open-booking
+            data-service-name={item.name}
+          >
+            <span>Выбрать тариф</span>
+          </button>
+        </div>
+      ))}
+    </div>
+
+    <!-- 2. Абонементы -->
+    <div class="pricing-grid pricing-grid--subs" id="pricing-sub">
+      {subs.map((item) => (
+        <div class={`price-card ${item.popular ? 'price-card--featured' : ''}`}>
+          {item.popular && <div class="card-ribbon">ВЫБОР РЕЗИДЕНТОВ</div>}
+          <div class="card-top">
+            <span class="card-num">№{item.num}</span>
+            <span class="card-tag">{item.rate}</span>
+          </div>
+          <h3 class="card-title">{item.name}</h3>
+
+          <div class="card-pricing">
+            <div class="price-main">{item.price}</div>
+            <div class="price-meta">
+              <span class="price-per-ep">{item.perEp}</span>
+              <span class="price-save">Выгода {item.save}</span>
+            </div>
+          </div>
+
+          <ul class="features-list">
+            {item.features.map((feat) => (
+              <li>
+                <span class="feat-check">✓</span>
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            type="button"
+            class={`btn-brutal ${item.popular ? 'btn-gold' : 'btn-white'} card-btn`}
+            data-open-booking
+            data-service-name={`Абонемент ${item.name}`}
+          >
+            <span>Забронировать слот</span>
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing-section {
+    padding: 70px 0;
+    border-top: 2px solid var(--color-dark);
+    background: var(--color-bg);
+  }
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-stone);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tag-star { color: var(--color-gold-bright); }
+  .section-title {
+    font-family: var(--font-accent);
+    font-size: 34px;
+    font-weight: 900;
+    color: var(--color-dark);
+  }
+  @media (min-width: 768px) {
+    .section-title { font-size: 46px; }
+  }
+  .guarantee-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-gold-light);
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-pill);
+    padding: 6px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+  .pricing-toggle-wrap { margin-top: 10px; }
+  .pricing-toggle {
+    display: inline-flex;
+    background: #FFFFFF;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-pill);
+    padding: 5px;
+    box-shadow: var(--shadow-brutal);
+    gap: 6px;
+  }
+  .toggle-btn {
+    padding: 10px 20px;
+    font-family: var(--font-accent);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: var(--radius-pill);
+    border: 2px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .toggle-btn.is-active {
+    background: var(--color-gold-bright);
+    border-color: var(--color-dark);
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+  .discount-pill {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    background: var(--color-dark);
+    color: var(--color-white);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+  }
+  .toggle-btn.is-active .discount-pill {
+    background: var(--color-dark);
+    color: var(--color-gold-bright);
+  }
+  .pricing-grid {
+    display: none;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .pricing-grid.is-active {
+    display: grid;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (min-width: 640px) {
+    .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1100px) {
+    .pricing-grid { grid-template-columns: repeat(4, 1fr); }
+    .pricing-grid--subs { grid-template-columns: repeat(3, 1fr); max-width: 1080px; margin: 0 auto; }
+  }
+  .price-card {
+    background: #FFFFFF;
+    border: var(--border-dark);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-brutal);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .price-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-brutal-hover);
+  }
+  .price-card--featured {
+    border: var(--border-dark-thick);
+    box-shadow: var(--shadow-brutal-lg);
+    background: #FAF9F5;
+  }
+  .card-ribbon {
+    position: absolute;
+    top: -12px;
+    right: 18px;
+    background: var(--color-dark);
+    color: var(--color-gold-bright);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-dark);
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .card-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-stone);
+    font-weight: 700;
+  }
+  .card-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    background: #F1F0EC;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .card-title {
+    font-family: var(--font-accent);
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .card-pricing {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1.5px dashed rgba(27, 27, 27, 0.15);
+  }
+  .price-main {
+    font-family: var(--font-accent);
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--color-dark);
+  }
+  .price-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+  .price-old {
+    font-size: 13px;
+    text-decoration: line-through;
+    color: #888;
+  }
+  .price-save {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #2E7D32;
+    background: #E8F5E9;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .price-per-ep {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-stone);
+  }
+  .features-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1 1 auto;
+    margin-bottom: 24px;
+  }
+  .features-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #333;
+  }
+  .feat-check {
+    color: var(--color-gold-bright);
+    font-weight: 900;
+    font-size: 14px;
+  }
+  .card-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+</style>
+
+<script>
+  const pBtns = document.querySelectorAll('[data-price-tab]');
+  const singleGrid = document.getElementById('pricing-single');
+  const subGrid = document.getElementById('pricing-sub');
+
+  pBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-price-tab');
+      pBtns.forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      if (tab === 'single') {
+        singleGrid?.classList.add('is-active');
+        subGrid?.classList.remove('is-active');
+      } else {
+        singleGrid?.classList.remove('is-active');
+        subGrid?.classList.add('is-active');
+      }
+    });
+  });
+</script>

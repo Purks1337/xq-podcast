@@ -1,0 +1,250 @@
+---
+// Cases.astro — Снято у нас / Кейсы студии ХВАЛИТЕ QUALITY
+const cases = [
+  {
+    title: 'Подкаст «Про Бизнес и Цифру»',
+    guest: 'Алексей Морозов, IT-предприниматель',
+    format: '3 камеры 4K · 5 Reels',
+    duration: '48 минут',
+    location: 'Локация Лаундж',
+    views: '124K просмотров',
+    img: '/assets/photos/lounge/DSC02584.jpg'
+  },
+  {
+    title: 'Шоу «Непростой Эксперт»',
+    guest: 'Елена Соколова, психолог',
+    format: '2 камеры 4K · Тизер + Обложка',
+    duration: '54 минуты',
+    location: 'Локация Трансформер',
+    views: '89K просмотров',
+    img: '/assets/photos/transformer/DSC02489.jpg'
+  },
+  {
+    title: 'Корпоративный подкаст УралТех',
+    guest: 'HR-дирекция и лидеры команд',
+    format: '3D-интро · Грим · Дистрибуция',
+    duration: '42 минуты',
+    location: 'Локация Трансформер (сетап Dark)',
+    views: 'Внутренний эфир + YouTube',
+    img: '/assets/photos/transformer/DSC02517.jpg'
+  }
+];
+---
+
+<section class="cases-section" id="cases">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">
+        <span>04 · ПОРТФОЛИО</span>
+        <span class="tag-star">★</span>
+      </div>
+      <h2 class="section-title">Снято у нас</h2>
+      <p class="section-subtitle">
+        Выпуски и проекты, записанные и смонтированные в студии ХВАЛИТЕ QUALITY
+      </p>
+    </div>
+
+    <!-- Сетка кейсов: ровно 3 в ряд -->
+    <div class="cases-grid">
+      {cases.map((item) => (
+        <article class="case-card">
+          <div class="case-media">
+            <img src={item.img} alt={item.title} class="case-img" loading="lazy" />
+            <div class="case-play-badge">
+              <span class="play-icon">▶</span>
+            </div>
+            <div class="case-top-badges">
+              <span class="badge-loc">{item.location}</span>
+              <span class="badge-time">{item.duration}</span>
+            </div>
+          </div>
+
+          <div class="case-body">
+            <span class="case-views">{item.views}</span>
+            <h3 class="case-title">{item.title}</h3>
+            <p class="case-guest">{item.guest}</p>
+            <div class="case-footer">
+              <span class="case-format">{item.format}</span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Кнопка по ТЗ: Смотреть другие кейсы -->
+    <div class="cases-action">
+      <a
+        href="https://t.me/hvaliteq"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-brutal btn-white"
+      >
+        <span>Смотреть другие кейсы</span>
+        <span>↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cases-section {
+    padding: 70px 0;
+    border-top: 2px solid var(--color-dark);
+    background: var(--color-bg);
+  }
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-stone);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tag-star { color: var(--color-gold-bright); }
+  .section-title {
+    font-family: var(--font-accent);
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--color-dark);
+  }
+  @media (min-width: 768px) {
+    .section-title { font-size: 48px; }
+  }
+  .section-subtitle {
+    font-size: 16px;
+    color: var(--color-stone);
+    max-width: 600px;
+  }
+  .cases-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  @media (min-width: 768px) {
+    .cases-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .case-card {
+    background: #FFFFFF;
+    border: var(--border-dark);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-brutal);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .case-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-brutal-hover);
+  }
+  .case-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #1B1B1B;
+  }
+  .case-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .case-card:hover .case-img { transform: scale(1.05); }
+  .case-play-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: var(--color-gold-bright);
+    border: 2px solid var(--color-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 0px var(--color-dark);
+    transition: transform 0.2s ease;
+  }
+  .case-card:hover .case-play-badge {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  .play-icon {
+    font-size: 16px;
+    color: var(--color-dark);
+    margin-left: 3px;
+  }
+  .case-top-badges {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .badge-loc, .badge-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1.5px solid var(--color-dark);
+  }
+  .badge-loc { background: #FFFFFF; color: var(--color-dark); }
+  .badge-time { background: var(--color-dark); color: #FFFFFF; }
+  .case-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1 1 auto;
+  }
+  .case-views {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #2E7D32;
+  }
+  .case-title {
+    font-family: var(--font-accent);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--color-dark);
+  }
+  .case-guest {
+    font-size: 14px;
+    color: var(--color-stone);
+    margin-bottom: 6px;
+  }
+  .case-footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(27, 27, 27, 0.15);
+  }
+  .case-format {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-dark);
+    background: #F1F0EC;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .cases-action {
+    display: flex;
+    justify-content: center;
+  }
+</style>

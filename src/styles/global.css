@@ -1,0 +1,225 @@
+/* Design Tokens & Theme Variables based on Brandbook & Ref/Service */
+:root {
+  /* Colors */
+  --color-bg: #E5E4DF;           /* Бетон / тёплый крафт (фон сайта) */
+  --color-bg-subtle: #DCDAD4;    /* Чуть темнее фон для разделителей */
+  --color-dark: #1B1B1B;         /* Уголь (основной цвет текста, рамок, теней) */
+  --color-graphite: #2A2A2A;     /* Графит */
+  --color-stone: #5E5D58;        /* Камень (технические подписи) */
+  --color-card: #FFFFFF;         /* Фон светлых карточек */
+  --color-card-warm: #FAF9F5;    /* Тёплый фон */
+  --color-gold: #D4A54C;         /* Золото Quality из брендбука */
+  --color-gold-bright: #E5A93C;  /* Яркое золото из обложек услуг */
+  --color-gold-light: #F4DEAB;   /* Светлое золото */
+  --color-white: #FFFFFF;
+  --color-rec: #E53935;          /* Красный индикатор REC */
+
+  /* Typography */
+  --font-accent: 'Unbounded', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-text: 'Golos Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Borders & Shadows (Brutal Pop-Art Style from Ref) */
+  --border-width: 2px;
+  --border-dark: 2px solid #1B1B1B;
+  --border-dark-thick: 3px solid #1B1B1B;
+  --shadow-brutal: 3px 3px 0px #1B1B1B;
+  --shadow-brutal-hover: 5px 5px 0px #1B1B1B;
+  --shadow-brutal-pressed: 1px 1px 0px #1B1B1B;
+  --shadow-brutal-lg: 6px 6px 0px #1B1B1B;
+  --radius-card: 16px;
+  --radius-card-lg: 22px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s var(--ease-spring);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-text);
+  color: var(--color-dark);
+  background-color: var(--color-bg);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  background-color: var(--color-bg);
+  background-image: 
+    radial-gradient(rgba(27, 27, 27, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Typography Defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-accent);
+  color: var(--color-dark);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: var(--color-dark);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Global Container */
+.container {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 32px;
+  }
+}
+
+/* Brutalist Buttons (from ref/service) */
+.btn-brutal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  padding: 12px 24px;
+  border: var(--border-dark);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-brutal);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), background-color var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn-brutal:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-brutal-hover);
+}
+
+.btn-brutal:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-brutal-pressed);
+}
+
+.btn-gold {
+  background-color: var(--color-gold-bright);
+  color: var(--color-dark);
+}
+.btn-gold:hover {
+  background-color: #f0b445;
+}
+
+.btn-dark {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}
+.btn-dark:hover {
+  background-color: var(--color-graphite);
+}
+
+.btn-white {
+  background-color: var(--color-white);
+  color: var(--color-dark);
+}
+.btn-white:hover {
+  background-color: #FAF9F5;
+}
+
+/* Monospace Badges & Tags */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-stone);
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: var(--border-dark);
+  background: var(--color-white);
+  color: var(--color-dark);
+}
+
+.badge-quality {
+  background: var(--color-gold-bright);
+  color: var(--color-dark);
+  box-shadow: 2px 2px 0px #1B1B1B;
+}
+
+/* Highlight marker block (as in ref/service) */
+.highlight-marker {
+  background-color: var(--color-gold-bright);
+  color: var(--color-dark);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* Technical REC pulse */
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-rec);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-rec 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-rec {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+}

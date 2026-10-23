@@ -1,0 +1,335 @@
+---
+// Contacts.astro — Контакты в фирменном стиле брендбука ХВАЛИТЕ QUALITY
+---
+
+<section class="contacts-section" id="contacts">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">
+        <span>05 · ЛОКАЦИЯ И СВЯЗЬ</span>
+        <span class="tag-star">★</span>
+      </div>
+      <h2 class="section-title">Контакты</h2>
+      <p class="section-subtitle">
+        Студия расположена в Екатеринбурге. Ждём вас на запись подкастов и съёмку видео.
+      </p>
+    </div>
+
+    <!-- Фирменная брутальная карточка контактов -->
+    <div class="contacts-card">
+      <div class="contacts-grid">
+        <!-- Левая часть: информация о студии -->
+        <div class="contacts-info">
+          <div class="info-block">
+            <span class="info-kicker">АДРЕС СТУДИИ</span>
+            <div class="info-address">
+              <p class="address-main">г. Екатеринбург, ул. Ботаническая, 19</p>
+              <p class="address-sub">(Вход с улицы Ботаническая, во дворе)</p>
+            </div>
+          </div>
+
+          <!-- Кнопка маршрута в стиле брендбука -->
+          <div class="route-action">
+            <a
+              href="https://yandex.ru/maps/-/CLrwyX5v"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-brutal btn-gold route-btn"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+              </svg>
+              <span>Проложить маршрут</span>
+            </a>
+          </div>
+
+          <!-- Соцсети с брутальными кнопками -->
+          <div class="social-group">
+            <span class="info-kicker">МЕССЕНДЖЕРЫ И СОЦСЕТИ</span>
+            <div class="social-buttons">
+              <a href="https://t.me/hvaliteq" target="_blank" rel="noopener noreferrer" class="social-badge" aria-label="Telegram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m22 2-7 20-4-9-9-4Z"/>
+                  <path d="M22 2 11 13"/>
+                </svg>
+                <span>Telegram</span>
+              </a>
+              <a href="https://wa.me/79923410520" target="_blank" rel="noopener noreferrer" class="social-badge" aria-label="WhatsApp">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                </svg>
+                <span>WhatsApp</span>
+              </a>
+              <a href="https://vk.com/hvaliteq" target="_blank" rel="noopener noreferrer" class="social-badge" aria-label="VKontakte">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13.162 18.994c.609 0 .858-.406.851-.915-.072-1.785.743-2.504 1.706-2.504.664 0 1.258.455 1.637.892 1.05 1.157 1.83 2.527 3.644 2.527h2.002c1.233 0 1.558-.598 1.137-1.57-.455-1.072-1.89-2.617-2.73-3.48-.488-.504-.634-.731 0-1.57.488-.65 2.146-2.926 2.373-3.95.13-.568-.325-.893-.975-.893h-2.097c-.748 0-1.008.358-1.211.829-.39 1.057-1.496 3.024-2.145 3.024-.26 0-.423-.13-.423-.748V9.123c0-.748-.228-1.073-.845-1.073H12.18c-.455 0-.715.342-.715.667 0 .683.975.845.975 2.764v3.17c0 .683-.292.813-.585.813-.78 0-2.682-2.748-3.771-5.918-.276-.796-.552-1.121-1.3-1.121H4.667c-.845 0-1.008.406-1.008.845 0 .813 1.04 4.877 4.844 10.225 2.535 3.593 6.096 5.568 9.324 5.568h.001z"/>
+                </svg>
+                <span>VK</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="contacts-direct">
+            <div class="info-block">
+              <span class="info-kicker">ТЕЛЕФОН</span>
+              <a href="tel:+79923410520" class="direct-link direct-link--phone">+7 992 341-05-20</a>
+            </div>
+
+            <div class="info-block">
+              <span class="info-kicker">EMAIL</span>
+              <a href="mailto:hvaliteq@gmail.com" class="direct-link">hvaliteq@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Правая часть: карта в брутальной рамке -->
+        <div class="contacts-map-box">
+          <div class="map-tag">
+            <span class="map-dot"></span>
+            <span>СТУДИЯ НА КАРТЕ ЕКБ</span>
+          </div>
+          <div class="map-embed">
+            <iframe
+              src="https://yandex.ru/map-widget/v1/?um=constructor%3A680b7aca79ef265ba846c64639d31d07737e18a4a8fc4b95e53179d86139f818&source=constructor"
+              width="100%"
+              height="100%"
+              frameborder="0"
+              title="Яндекс Карта — Студия Хвалите Quality"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacts-section {
+    padding: 70px 0 90px;
+    border-top: 2px solid var(--color-dark);
+    background: var(--color-bg);
+  }
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-stone);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tag-star { color: var(--color-gold-bright); }
+  .section-title {
+    font-family: var(--font-accent);
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--color-dark);
+  }
+  @media (min-width: 768px) {
+    .section-title { font-size: 48px; }
+  }
+  .section-subtitle {
+    font-size: 16px;
+    color: var(--color-stone);
+    max-width: 580px;
+  }
+
+  /* Фирменная карточка в стиле брендбука */
+  .contacts-card {
+    background: #FFFFFF;
+    border: var(--border-dark-thick);
+    border-radius: var(--radius-card-lg);
+    box-shadow: var(--shadow-brutal-lg);
+    overflow: hidden;
+  }
+
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 960px) {
+    .contacts-grid {
+      grid-template-columns: 460px 1fr;
+    }
+  }
+
+  .contacts-info {
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: #FAF9F5;
+    border-bottom: 2px solid var(--color-dark);
+  }
+
+  @media (min-width: 960px) {
+    .contacts-info {
+      border-bottom: none;
+      border-right: 2px solid var(--color-dark);
+    }
+  }
+
+  .info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .info-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--color-stone);
+  }
+
+  .address-main {
+    font-family: var(--font-accent);
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--color-dark);
+    line-height: 1.3;
+  }
+
+  .address-sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-stone);
+    margin-top: 2px;
+  }
+
+  .route-action {
+    display: flex;
+  }
+
+  .route-btn {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+
+  .social-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1.5px dashed rgba(27, 27, 27, 0.18);
+  }
+
+  .social-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .social-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: #FFFFFF;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-pill);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-dark);
+    text-decoration: none;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+  }
+
+  .social-badge:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-dark);
+    background: var(--color-gold-light);
+  }
+
+  .contacts-direct {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-top: 12px;
+    border-top: 1.5px dashed rgba(27, 27, 27, 0.18);
+  }
+
+  .direct-link {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-dark);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .direct-link--phone {
+    font-size: 18px;
+  }
+
+  .direct-link:hover {
+    color: var(--color-gold-bright);
+  }
+
+  /* Блок карты */
+  .contacts-map-box {
+    position: relative;
+    min-height: 420px;
+    background: #E5E4DF;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Обрезает баннер */
+  }
+
+  .map-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    background: var(--color-dark);
+    color: var(--color-gold-bright);
+    border: 1.5px solid var(--color-dark);
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+
+  .map-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-gold-bright);
+  }
+
+  .map-embed {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: #E5E4DF;
+  }
+
+  .map-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 110px);
+    border: none;
+    display: block;
+  }
+</style>

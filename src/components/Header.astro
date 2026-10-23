@@ -1,0 +1,412 @@
+---
+// Header.astro
+---
+
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <!-- 1. Логотип: звезда + название + плашка QUALITY -->
+      <a href="/" class="header-logo" aria-label="Хвалите Quality главная">
+        <div class="logo-star-wrapper">
+          <img src="/assets/logo/star-monogram.svg" alt="Звезда Хвалите" class="logo-star" width="38" height="38" />
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-name">ХВАЛИТЕ</span>
+          <span class="logo-pill">QUALITY</span>
+        </div>
+      </a>
+
+      <!-- 2. Навигационные кнопки -->
+      <nav class="header-nav" aria-label="Основное меню">
+        <ul class="nav-list">
+          <li><a href="#photos" class="nav-link">Фото студии</a></li>
+          <li><a href="#cases" class="nav-link">Снято у нас</a></li>
+          <li><a href="#contacts" class="nav-link">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <!-- 3. Контакты: телефон и адрес -->
+      <div class="header-contacts">
+        <a href="tel:+79923410520" class="contact-item contact-phone">
+          <span class="status-indicator"></span>
+          <span class="contact-text">+7 992 341-05-20</span>
+        </a>
+        <a href="https://yandex.ru/maps/-/CLrwyX5v" target="_blank" rel="noopener noreferrer" class="contact-item contact-address">
+          <svg class="geo-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span class="contact-text">ЕКБ, Ботаническая 19</span>
+        </a>
+      </div>
+
+      <!-- 4. Кнопка с иконкой: Записать подкаст -->
+      <div class="header-action">
+        <button type="button" class="btn-brutal btn-gold header-cta-btn" data-open-booking>
+          <span class="btn-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" x2="12" y1="19" y2="22"/>
+            </svg>
+          </span>
+          <span class="btn-text">Записать подкаст</span>
+        </button>
+
+        <!-- Мобильная кнопка меню (бургер) -->
+        <button type="button" class="mobile-toggle" id="mobileMenuBtn" aria-label="Открыть меню">
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Мобильное выпадающее меню -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-inner">
+      <ul class="mobile-nav-list">
+        <li><a href="#photos" class="mobile-nav-link">Фото студии</a></li>
+        <li><a href="#cases" class="mobile-nav-link">Снято у нас</a></li>
+        <li><a href="#contacts" class="mobile-nav-link">Контакты</a></li>
+      </ul>
+      <div class="mobile-menu-contacts">
+        <a href="tel:+79923410520" class="mobile-contact-phone">+7 992 341-05-20</a>
+        <a href="https://yandex.ru/maps/-/CLrwyX5v" target="_blank" rel="noopener noreferrer" class="mobile-contact-address">
+          ЕКБ, Ботаническая 19
+        </a>
+      </div>
+      <button type="button" class="btn-brutal btn-gold mobile-cta-btn" data-open-booking>
+        <span>🎙</span>
+        <span>Записать подкаст</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background-color: rgba(229, 228, 223, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--color-dark);
+    padding: 14px 0;
+    transition: background-color var(--transition-fast);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* 1. Логотип */
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-star-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .header-logo:hover .logo-star-wrapper {
+    transform: rotate(90deg);
+  }
+
+  .logo-star {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+  }
+
+  .logo-text-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-name {
+    font-family: var(--font-accent);
+    font-weight: 900;
+    font-size: 19px;
+    letter-spacing: -0.03em;
+    color: var(--color-dark);
+  }
+
+  .logo-pill {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 3px 7px;
+    background-color: var(--color-gold-bright);
+    color: var(--color-dark);
+    border: 1.5px solid var(--color-dark);
+    border-radius: var(--radius-pill);
+    box-shadow: 1.5px 1.5px 0px var(--color-dark);
+  }
+
+  /* 2. Навигация */
+  .header-nav {
+    display: none;
+  }
+
+  @media (min-width: 992px) {
+    .header-nav {
+      display: block;
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .nav-link {
+    font-family: var(--font-accent);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-dark);
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    border: 2px solid transparent;
+    transition: all var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    background-color: var(--color-white);
+    border-color: var(--color-dark);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    transform: translate(-1px, -1px);
+  }
+
+  /* 3. Контакты */
+  .header-contacts {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  @media (min-width: 1200px) {
+    .header-contacts {
+      display: flex;
+    }
+  }
+
+  .contact-item {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color var(--transition-fast);
+  }
+
+  .contact-phone {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: -0.01em;
+  }
+
+  .contact-address {
+    color: var(--color-stone);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+
+  .contact-item:hover {
+    color: var(--color-gold-bright);
+  }
+
+  .contact-address:hover {
+    color: var(--color-dark);
+    text-decoration: underline;
+  }
+
+  .status-indicator {
+    width: 7px;
+    height: 7px;
+    background-color: #10B981; /* Зелёный онлайн/на связи */
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+  }
+
+  .geo-icon {
+    color: var(--color-gold-bright);
+    stroke-width: 2.5;
+  }
+
+  /* 4. Действие (кнопка) */
+  .header-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-cta-btn {
+    font-size: 13px;
+    padding: 10px 20px;
+    gap: 8px;
+  }
+
+  .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Бургер для мобильных */
+  .mobile-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: var(--color-white);
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    padding: 8px;
+  }
+
+  @media (min-width: 992px) {
+    .mobile-toggle {
+      display: none;
+    }
+  }
+
+  .mobile-toggle .bar {
+    display: block;
+    width: 100%;
+    height: 2.5px;
+    background: var(--color-dark);
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  /* Мобильное меню выпадающее */
+  .mobile-menu {
+    display: none;
+    background: var(--color-bg);
+    border-bottom: 2px solid var(--color-dark);
+    padding: 24px 20px;
+  }
+
+  .mobile-menu.is-active {
+    display: block;
+    animation: slideDown 0.2s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mobile-nav-link {
+    font-family: var(--font-accent);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-dark);
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(27, 27, 27, 0.2);
+  }
+
+  .mobile-menu-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    background: var(--color-white);
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+
+  .mobile-contact-phone {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-dark);
+  }
+
+  .mobile-contact-address {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-stone);
+  }
+
+  .mobile-cta-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  @media (max-width: 600px) {
+    .header-cta-btn {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Мобильное меню
+  const toggleBtn = document.getElementById('mobileMenuBtn');
+  const menu = document.getElementById('mobileMenu');
+
+  if (toggleBtn && menu) {
+    toggleBtn.addEventListener('click', () => {
+      menu.classList.toggle('is-active');
+      const isExpanded = menu.classList.contains('is-active');
+      toggleBtn.setAttribute('aria-expanded', String(isExpanded));
+    });
+
+    // Закрытие при клике по ссылке
+    const navLinks = menu.querySelectorAll('a, button');
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('is-active');
+      });
+    });
+  }
+</script>

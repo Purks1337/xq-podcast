@@ -1,0 +1,229 @@
+---
+// BookingModal.astro — Модалка бронирования записи подкаста
+---
+
+<dialog id="bookingModal" class="booking-dialog">
+  <div class="booking-card">
+    <div class="booking-head">
+      <div class="booking-badge">ХВАЛИТЕ QUALITY</div>
+      <button type="button" class="btn-close" id="closeBookingBtn" aria-label="Закрыть">✕</button>
+    </div>
+
+    <h3 class="booking-title">Забронировать запись</h3>
+    <p class="booking-subtitle">
+      Оставьте контакт — продюсер свяжется в течение 15 минут, подберёт дату и закрепит за вами студийное время.
+    </p>
+
+    <form class="booking-form" id="bookingForm">
+      <div class="form-group">
+        <label for="bookName" class="form-label">Ваше имя</label>
+        <input type="text" id="bookName" name="name" class="form-input" placeholder="Как вас зовут?" required />
+      </div>
+
+      <div class="form-group">
+        <label for="bookPhone" class="form-label">Телефон или Telegram</label>
+        <input type="text" id="bookPhone" name="contact" class="form-input" placeholder="+7 999 000-00-00 или @username" required />
+      </div>
+
+      <div class="form-group">
+        <label for="bookFormat" class="form-label">Локация / Тариф</label>
+        <select id="bookFormat" name="service" class="form-select">
+          <option value="Под ключ (35 900 ₽)">Тариф «Под ключ» — 35 900 ₽ (ХИТ)</option>
+          <option value="Старт (20 900 ₽)">Тариф «Старт» — 20 900 ₽</option>
+          <option value="Контент на месяц (76 900 ₽)">Тариф «Контент на месяц» — 76 900 ₽</option>
+          <option value="Корпоративный (69 900 ₽)">Тариф «Корпоративный» — 69 900 ₽</option>
+          <option value="Абонемент">Абонемент (регулярная запись)</option>
+          <option value="Локация Лаундж (ретро-ТВ)">Локация Лаундж (ретро-ТВ)</option>
+          <option value="Локация Трансформер">Локация Трансформер (20+ сетапов)</option>
+          <option value="Консультация">Нужна консультация продюсера</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-brutal btn-gold submit-btn">
+        <span>Отправить заявку</span>
+        <span>→</span>
+      </button>
+
+      <div class="form-status" id="formStatus"></div>
+
+      <p class="form-legal">
+        Нажимая кнопку, вы соглашаетесь с условиями политики конфиденциальности.
+      </p>
+    </form>
+  </div>
+</dialog>
+
+<style>
+  .booking-dialog {
+    border: none;
+    background: transparent;
+    padding: 16px;
+    max-width: 520px;
+    width: 100%;
+    margin: auto;
+  }
+  .booking-dialog::backdrop {
+    background: rgba(27, 27, 27, 0.75);
+    backdrop-filter: blur(6px);
+  }
+  .booking-card {
+    background: #FFFFFF;
+    border: var(--border-dark-thick);
+    border-radius: var(--radius-card-lg);
+    box-shadow: 8px 8px 0px var(--color-dark);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+  }
+  .booking-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .booking-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    background: var(--color-gold-bright);
+    color: var(--color-dark);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-dark);
+  }
+  .btn-close {
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid var(--color-dark);
+    border-radius: 50%;
+    background: #FFF;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+  .btn-close:hover {
+    background: var(--color-dark);
+    color: #FFF;
+  }
+  .booking-title {
+    font-family: var(--font-accent);
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--color-dark);
+    line-height: 1.2;
+  }
+  .booking-subtitle {
+    font-size: 14px;
+    color: var(--color-stone);
+    line-height: 1.5;
+  }
+  .booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-dark);
+    text-transform: uppercase;
+  }
+  .form-input, .form-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: var(--border-dark);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-text);
+    font-size: 15px;
+    color: var(--color-dark);
+    background: #FAF9F5;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--color-dark);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    background: #FFF;
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 15px;
+    margin-top: 8px;
+  }
+  .form-status {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: center;
+    display: none;
+    padding: 10px;
+    border-radius: 6px;
+  }
+  .form-status.is-success {
+    display: block;
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #A5D6A7;
+  }
+  .form-legal {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    line-height: 1.4;
+  }
+</style>
+
+<script>
+  const modal = document.getElementById('bookingModal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('closeBookingBtn');
+  const openBtns = document.querySelectorAll('[data-open-booking]');
+  const selectEl = document.getElementById('bookFormat') as HTMLSelectElement | null;
+  const form = document.getElementById('bookingForm') as HTMLFormElement | null;
+  const statusEl = document.getElementById('formStatus');
+
+  openBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const serviceName = btn.getAttribute('data-service-name');
+      if (serviceName && selectEl) {
+        for (let i = 0; i < selectEl.options.length; i++) {
+          if (selectEl.options[i].text.includes(serviceName)) {
+            selectEl.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      modal?.showModal();
+    });
+  });
+
+  closeBtn?.addEventListener('click', () => modal?.close());
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) modal.close();
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (statusEl) {
+      statusEl.className = 'form-status is-success';
+      statusEl.textContent = '✓ Заявка принята! Продюсер свяжется с вами в течение 15 минут.';
+      form.reset();
+      setTimeout(() => {
+        modal?.close();
+        statusEl.className = 'form-status';
+      }, 3000);
+    }
+  });
+</script>
