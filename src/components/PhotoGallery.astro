@@ -201,34 +201,34 @@ const locations = [
   carousels.forEach((carouselEl) => {
     const rawData = carouselEl.getAttribute("data-photos");
     if (!rawData) return;
-    const photos = JSON.parse(rawData);
+    const photos: { src: string; title: string }[] = JSON.parse(rawData);
     let activeIdx = 0;
 
-    const mainWrap = carouselEl.querySelector(".carousel-main");
-    const mainImg = carouselEl.querySelector(".carousel-main__img");
-    const captionEl = carouselEl.querySelector(".carousel-main__caption");
-    const counterCurr = carouselEl.querySelector(".c-curr");
-    const prevBtn = carouselEl.querySelector(".carousel-arrow--prev");
-    const nextBtn = carouselEl.querySelector(".carousel-arrow--next");
-    const zoomBtn = carouselEl.querySelector(".carousel-main__zoom-btn");
-    const thumbs = carouselEl.querySelectorAll(".thumb-item");
-    const thumbsStrip = carouselEl.querySelector(".carousel-thumbs");
+    const mainWrap = carouselEl.querySelector<HTMLElement>(".carousel-main");
+    const mainImg = carouselEl.querySelector<HTMLImageElement>(".carousel-main__img");
+    const captionEl = carouselEl.querySelector<HTMLElement>(".carousel-main__caption");
+    const counterCurr = carouselEl.querySelector<HTMLElement>(".c-curr");
+    const prevBtn = carouselEl.querySelector<HTMLElement>(".carousel-arrow--prev");
+    const nextBtn = carouselEl.querySelector<HTMLElement>(".carousel-arrow--next");
+    const zoomBtn = carouselEl.querySelector<HTMLElement>(".carousel-main__zoom-btn");
+    const thumbs = carouselEl.querySelectorAll<HTMLElement>(".thumb-item");
+    const thumbsStrip = carouselEl.querySelector<HTMLElement>(".carousel-thumbs");
 
-    function updateSlide(newIdx) {
+    function updateSlide(newIdx: number) {
       if (newIdx < 0) newIdx = photos.length - 1;
       if (newIdx >= photos.length) newIdx = 0;
       activeIdx = newIdx;
 
       const p = photos[activeIdx];
-      if (mainImg) {
+      if (mainImg && p) {
         mainImg.style.opacity = "0.4";
         mainImg.src = p.src;
         mainImg.alt = p.title;
         mainImg.onload = () => {
-          mainImg.style.opacity = "1";
+          if (mainImg) mainImg.style.opacity = "1";
         };
       }
-      if (captionEl) captionEl.textContent = p.title;
+      if (captionEl && p) captionEl.textContent = p.title;
       if (counterCurr) counterCurr.textContent = String(activeIdx + 1).padStart(2, "0");
 
       thumbs.forEach((th, i) => {
@@ -260,10 +260,10 @@ const locations = [
     });
 
     // Открытие на весь экран (при клике на фото или кнопку zoom)
-    function triggerFullscreen(e) {
+    function triggerFullscreen(e: Event) {
       e.stopPropagation();
-      if (typeof window.openLightbox === "function") {
-        window.openLightbox(photos, activeIdx);
+      if (typeof (window as any).openLightbox === "function") {
+        (window as any).openLightbox(photos, activeIdx);
       }
     }
 
