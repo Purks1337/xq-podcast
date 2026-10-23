@@ -1,14 +1,15 @@
 ---
 // Footer.astro — Футер студии ХВАЛИТЕ QUALITY
+import { getAssetUrl } from '../utils/paths';
 ---
 
 <footer class="site-footer">
   <div class="container">
     <div class="footer-top">
       <!-- Логотип со знаком и буквами -->
-      <a href="/" class="footer-logo">
+      <a href={import.meta.env.BASE_URL} class="footer-logo">
         <div class="footer-star">
-          <img src="/assets/logo/star-monogram.svg" alt="Звезда" width="34" height="34" />
+          <img src={getAssetUrl('/assets/logo/star-monogram.svg')} alt="Звезда" width="34" height="34" />
         </div>
         <div class="footer-brand">
           <span class="footer-name">ХВАЛИТЕ</span>

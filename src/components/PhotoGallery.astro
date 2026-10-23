@@ -2,8 +2,9 @@
 // PhotoGallery.astro — Карусель студий с полноэкранным просмотром
 import "../styles/gallery.css";
 import Lightbox from "./Lightbox.astro";
+import { getAssetUrl } from "../utils/paths";
 
-const locations = [
+const rawLocations = [
   {
     id: "transformer",
     title: "Локация трансформер",
@@ -41,6 +42,11 @@ const locations = [
     ]
   }
 ];
+
+const locations = rawLocations.map((loc) => ({
+  ...loc,
+  photos: loc.photos.map((p) => ({ ...p, src: getAssetUrl(p.src) }))
+}));
 ---
 
 <section class="gallery-section" id="photos">

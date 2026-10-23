@@ -1,14 +1,15 @@
 ---
 // Header.astro
+import { getAssetUrl } from '../utils/paths';
 ---
 
 <header class="site-header">
   <div class="container">
     <div class="header-inner">
       <!-- 1. Логотип: звезда + название + плашка QUALITY -->
-      <a href="/" class="header-logo" aria-label="Хвалите Quality главная">
+      <a href={import.meta.env.BASE_URL} class="header-logo" aria-label="Хвалите Quality главная">
         <div class="logo-star-wrapper">
-          <img src="/assets/logo/star-monogram.svg" alt="Звезда Хвалите" class="logo-star" width="38" height="38" />
+          <img src={getAssetUrl('/assets/logo/star-monogram.svg')} alt="Звезда Хвалите" class="logo-star" width="38" height="38" />
         </div>
         <div class="logo-text-group">
           <span class="logo-name">ХВАЛИТЕ</span>

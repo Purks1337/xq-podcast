@@ -1,6 +1,8 @@
 ---
 // Cases.astro — Снято у нас / Кейсы студии ХВАЛИТЕ QUALITY
-const cases = [
+import { getAssetUrl } from '../utils/paths';
+
+const rawCases = [
   {
     title: 'Подкаст «Про Бизнес и Цифру»',
     guest: 'Алексей Морозов, IT-предприниматель',
@@ -29,6 +31,11 @@ const cases = [
     img: '/assets/photos/transformer/DSC02517.jpg'
   }
 ];
+
+const cases = rawCases.map((c) => ({
+  ...c,
+  img: getAssetUrl(c.img)
+}));
 ---
 
 <section class="cases-section" id="cases">

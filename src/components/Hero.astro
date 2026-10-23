@@ -1,5 +1,8 @@
 ---
 // Hero.astro — Хвалите Quality Студия подкастов
+import { getAssetUrl } from '../utils/paths';
+
+const heroPoster = getAssetUrl('/assets/photos/lounge/DSC02584.jpg');
 ---
 
 <section class="hero-section" id="hero">
@@ -90,7 +93,7 @@
             <!-- Заглушка с фото, помехами и лоадером до старта видео -->
             <div class="poster-placeholder" id="hero-placeholder">
               <img
-                src="/assets/photos/lounge/DSC02584.jpg"
+                src={heroPoster}
                 alt="Студия подкастов Хвалите Quality"
                 class="placeholder-photo"
               />
@@ -355,7 +358,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #111 url('/assets/photos/lounge/DSC02584.jpg') center/cover no-repeat;
+    background: #111;
   }
 
   .poster-video-iframe {
