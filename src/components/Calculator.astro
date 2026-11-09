@@ -351,40 +351,6 @@
           </div>
         </div>
 
-        <!-- 5. Скидки и Наценки -->
-        <div class="control-block">
-          <div class="block-header">
-            <span class="block-num">05</span>
-            <label class="block-title">Скидки и спец-условия</label>
-          </div>
-
-          <div class="discounts-grid">
-            <div class="form-group-calc">
-              <label for="discountSelect" class="param-label">Акция / скидка:</label>
-              <select id="discountSelect" class="form-select-styled">
-                <option value="0" selected>Без скидки</option>
-                <option value="0.20">Первая запись в студии (−20%)</option>
-                <option value="0.15">Будни до 14:00 (−15%)</option>
-                <option value="0.18">Подписка от 3 месяцев (−18%)</option>
-                <option value="0.10">Постоянный клиент (−10%)</option>
-                <option value="0.05">Своя скидка (−5%)</option>
-              </select>
-            </div>
-
-            <div class="form-group-calc">
-              <label for="markupSelect" class="param-label">Наценка / срочность:</label>
-              <select id="markupSelect" class="form-select-styled">
-                <option value="0" selected>Без наценки (0%)</option>
-                <option value="0.05">+5% (базовая срочность)</option>
-                <option value="0.10">+10% (выходные дни)</option>
-                <option value="0.15">+15% (срочный монтаж 24-48ч)</option>
-                <option value="0.20">+20% (ночная смена)</option>
-                <option value="0.30">+30% (экспресс-сдача день в день)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
       </div>
 
       <!-- ПРАВАЯ КОЛОНКА: ДЕТАЛИЗИРОВАННАЯ СМЕТА (RECEIPT) -->
@@ -410,25 +376,9 @@
 
           <!-- Финансовые итоги -->
           <div class="receipt-totals">
-            <div class="total-line">
-              <span class="total-label">Сумма по прайсу</span>
-              <span class="total-value" id="subtotalVal">0 ₽</span>
-            </div>
-
-            <div class="total-line markup-line" id="markupLine" style="display: none;">
-              <span class="total-label" id="markupLabel">Наценка (+0%)</span>
-              <span class="total-value" id="markupVal">+0 ₽</span>
-            </div>
-
-            <div class="total-line discount-line" id="discountLine" style="display: none;">
-              <span class="total-label" id="discountLabel">Скидка по акции</span>
-              <span class="total-value" id="discountVal">−0 ₽</span>
-            </div>
-
             <div class="grand-total-block">
               <div class="grand-total-header">
                 <span class="grand-total-label">ИТОГО К ОПЛАТЕ:</span>
-                <span class="grand-total-save" id="grandSaveBadge" style="display: none;">Экономия 0 ₽</span>
               </div>
               <div class="grand-total-price" id="finalTotalVal">11 500 ₽</div>
             </div>
@@ -913,21 +863,6 @@
     background-color: var(--color-dark);
   }
 
-  /* Discounts Grid */
-  .discounts-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  @media (min-width: 640px) {
-    .discounts-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  .form-group-calc {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
   /* SIDEBAR: RECEIPT CARD */
   .calc-sidebar {
     position: sticky;
@@ -1037,25 +972,6 @@
     flex-direction: column;
     gap: 8px;
     margin-bottom: 20px;
-  }
-  .total-line {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 13px;
-    color: var(--color-stone);
-    font-weight: 600;
-  }
-  .total-value {
-    font-family: var(--font-mono);
-    font-weight: 800;
-    color: var(--color-dark);
-  }
-  .markup-line .total-value {
-    color: #D97706;
-  }
-  .discount-line .total-value {
-    color: #16A34A;
   }
   .grand-total-block {
     background: #FAF9F5;
@@ -1198,8 +1114,6 @@
     publishing: string;
     intro2d: number;
     intro3d: number;
-    discountRate: number;
-    markupRate: number;
   }
 
   // Данные расчёта из листа «Прайс»
@@ -1288,9 +1202,7 @@
     host: false,
     publishing: 'none',     // 'none' | 'first' | 'next'
     intro2d: 0,             // 0, 5, 10, 15, 20, 30
-    intro3d: 0,             // 0, 5, 10, 15, 20, 30
-    discountRate: 0,
-    markupRate: 0
+    intro3d: 0              // 0, 5, 10, 15, 20, 30
   };
 
   let state: CalculatorState = { ...DEFAULT_STATE };
@@ -1324,19 +1236,9 @@
   const publishingSelect = document.getElementById('publishingSelect') as HTMLSelectElement | null;
   const intro2dSelect = document.getElementById('intro2dSelect') as HTMLSelectElement | null;
   const intro3dSelect = document.getElementById('intro3dSelect') as HTMLSelectElement | null;
-  const discountSelect = document.getElementById('discountSelect') as HTMLSelectElement | null;
-  const markupSelect = document.getElementById('markupSelect') as HTMLSelectElement | null;
 
   // Смета
   const receiptItemsList = document.getElementById('receiptItemsList');
-  const subtotalVal = document.getElementById('subtotalVal');
-  const markupLine = document.getElementById('markupLine');
-  const markupLabel = document.getElementById('markupLabel');
-  const markupVal = document.getElementById('markupVal');
-  const discountLine = document.getElementById('discountLine');
-  const discountLabel = document.getElementById('discountLabel');
-  const discountVal = document.getElementById('discountVal');
-  const grandSaveBadge = document.getElementById('grandSaveBadge');
   const finalTotalVal = document.getElementById('finalTotalVal');
   const resetCalcBtn = document.getElementById('resetCalcBtn');
   const bookCalcBtn = document.getElementById('bookCalcBtn');
@@ -1482,8 +1384,6 @@
     if (publishingSelect) publishingSelect.value = state.publishing;
     if (intro2dSelect) intro2dSelect.value = String(state.intro2d);
     if (intro3dSelect) intro3dSelect.value = String(state.intro3d);
-    if (discountSelect) discountSelect.value = String(state.discountRate);
-    if (markupSelect) markupSelect.value = String(state.markupRate);
   }
 
   function calculate() {
@@ -1610,17 +1510,8 @@
       addonsSum += cost;
     }
 
-    // Сумма по прайсу
-    const subtotal = basePrice + deliveryPrice + editingPrice + addonsSum;
-
-    // Наценка
-    const markupAmount = Math.round(subtotal * state.markupRate);
-
-    // Скидка по акции
-    const discountAmount = Math.round((subtotal + markupAmount) * state.discountRate);
-
-    // Итого
-    const finalTotal = Math.max(0, Math.round((subtotal + markupAmount - discountAmount) / 100) * 100);
+    // Итого к оплате
+    const finalTotal = basePrice + deliveryPrice + editingPrice + addonsSum;
 
     // Рендер позиций сметы
     if (receiptItemsList) {
@@ -1632,37 +1523,6 @@
       `).join('');
     }
 
-    if (subtotalVal) subtotalVal.textContent = fmtPrice(subtotal);
-
-    if (markupLine && markupVal && markupLabel) {
-      if (state.markupRate > 0) {
-        markupLine.style.display = 'flex';
-        markupLabel.textContent = `Наценка (+${Math.round(state.markupRate * 100)}%)`;
-        markupVal.textContent = `+${fmtPrice(markupAmount)}`;
-      } else {
-        markupLine.style.display = 'none';
-      }
-    }
-
-    if (discountLine && discountVal && discountLabel) {
-      if (state.discountRate > 0) {
-        discountLine.style.display = 'flex';
-        discountLabel.textContent = `Скидка по акции (−${Math.round(state.discountRate * 100)}%)`;
-        discountVal.textContent = `−${fmtPrice(discountAmount)}`;
-      } else {
-        discountLine.style.display = 'none';
-      }
-    }
-
-    if (grandSaveBadge) {
-      if (discountAmount > 0) {
-        grandSaveBadge.style.display = 'inline-block';
-        grandSaveBadge.textContent = `Экономия ${fmtPrice(discountAmount)}`;
-      } else {
-        grandSaveBadge.style.display = 'none';
-      }
-    }
-
     if (finalTotalVal) {
       finalTotalVal.textContent = fmtPrice(finalTotal);
     }
@@ -1670,9 +1530,6 @@
     // Сохраняем текстовое описание для модалки и копирования
     const summaryText = items.map(i => `• ${i.name}: ${fmtPrice(i.price)}`).join('\n')
       + `\n------------------------`
-      + `\nСумма: ${fmtPrice(subtotal)}`
-      + (state.markupRate > 0 ? `\nНаценка (+${Math.round(state.markupRate*100)}%): +${fmtPrice(markupAmount)}` : '')
-      + (state.discountRate > 0 ? `\nСкидка (−${Math.round(state.discountRate*100)}%): −${fmtPrice(discountAmount)}` : '')
       + `\nИТОГО: ${fmtPrice(finalTotal)}`;
 
     if (bookCalcBtn) {
@@ -1681,7 +1538,7 @@
       bookCalcBtn.setAttribute('data-service-name', `Расчёт из калькулятора (${fmtPrice(finalTotal)})`);
     }
 
-    return { subtotal, markupAmount, discountAmount, finalTotal, items, summaryText };
+    return { finalTotal, items, summaryText };
   }
 
   // ОБРАБОТЧИКИ СОБЫТИЙ
@@ -1793,14 +1650,6 @@
   });
   intro3dSelect?.addEventListener('change', (e) => {
     state.intro3d = Number((e.target as HTMLSelectElement).value);
-    calculate();
-  });
-  discountSelect?.addEventListener('change', (e) => {
-    state.discountRate = Number((e.target as HTMLSelectElement).value);
-    calculate();
-  });
-  markupSelect?.addEventListener('change', (e) => {
-    state.markupRate = Number((e.target as HTMLSelectElement).value);
     calculate();
   });
 
