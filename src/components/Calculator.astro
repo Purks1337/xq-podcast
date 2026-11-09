@@ -1150,8 +1150,60 @@
 </style>
 
 <script>
+  interface PricingTable {
+    studio: Record<number, Record<number, number>>;
+    field: Record<number, Record<number, number>>;
+    fieldDelivery: number;
+    audio: Record<number, number>;
+    stream: Record<number, Record<number, number>>;
+    rental: Record<string, number>;
+    editing: {
+      simple: Record<number, number>;
+      complex: Record<number, number>;
+      extraPer30Min: number;
+    };
+    addons: {
+      reels: number;
+      reelsCover: number;
+      videoCover: number;
+      teaser: number;
+      publishingFirst: number;
+      publishingNext: number;
+      transcription: number;
+      prompter: number;
+      host: number;
+      makeup: number;
+      intro2d: number;
+      intro3d: number;
+      backstage: number;
+    };
+  }
+
+  interface CalculatorState {
+    service: string;
+    cameras: number;
+    hours: number;
+    rentalTime: string;
+    editing: string;
+    rawMinutes: number;
+    reels: number;
+    reelsCover: number;
+    videoCover: number;
+    teaser: number;
+    makeup: number;
+    backstage: number;
+    prompter: boolean;
+    transcription: boolean;
+    host: boolean;
+    publishing: string;
+    intro2d: number;
+    intro3d: number;
+    discountRate: number;
+    markupRate: number;
+  }
+
   // Данные расчёта из листа «Прайс»
-  const PRICING = {
+  const PRICING: PricingTable = {
     studio: {
       1: { 1: 5000, 2: 9500, 3: 13500, 4: 17500 },
       2: { 1: 6000, 2: 11500, 3: 16500, 4: 21500 },
@@ -1218,7 +1270,7 @@
   };
 
   // Дефолтное состояние калькулятора (из листа «Как сбросить»)
-  const DEFAULT_STATE = {
+  const DEFAULT_STATE: CalculatorState = {
     service: 'studio',      // 'studio' | 'field' | 'audio' | 'stream' | 'rental'
     cameras: 2,             // 1..5
     hours: 2,               // 1..4, 8, 10
@@ -1241,7 +1293,7 @@
     markupRate: 0
   };
 
-  let state = { ...DEFAULT_STATE };
+  let state: CalculatorState = { ...DEFAULT_STATE };
 
   // DOM элементы
   const serviceCards = document.querySelectorAll('.service-card');
