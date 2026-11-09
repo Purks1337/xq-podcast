@@ -181,6 +181,21 @@ const subs = [
         </div>
       ))}
     </div>
+
+    <!-- Переход в калькулятор -->
+    <div class="pricing-calc-callout">
+      <div class="callout-left">
+        <span class="callout-icon">🧮</span>
+        <div class="callout-text">
+          <h4 class="callout-title">Нужен индивидуальный сетап под ваш проект?</h4>
+          <p class="callout-desc">Выберите количество камер, хронометраж, монтаж, нарезки рилс и доп. опции в интерактивном калькуляторе.</p>
+        </div>
+      </div>
+      <a href="#calculator" class="btn-brutal btn-gold callout-btn">
+        <span>Рассчитать смету</span>
+        <span>↓</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -413,6 +428,61 @@ const subs = [
     width: 100%;
     padding: 12px;
     font-size: 14px;
+  }
+  .pricing-calc-callout {
+    margin-top: 36px;
+    background: #FFFFFF;
+    border: var(--border-dark);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-brutal);
+    padding: 22px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  @media (min-width: 768px) {
+    .pricing-calc-callout {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .callout-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .callout-icon {
+    font-size: 32px;
+    line-height: 1;
+    background: var(--color-gold-light);
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+  .callout-title {
+    font-family: var(--font-accent);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-dark);
+    margin-bottom: 4px;
+  }
+  .callout-desc {
+    font-size: 13px;
+    color: var(--color-stone);
+    line-height: 1.4;
+  }
+  .callout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 </style>
 

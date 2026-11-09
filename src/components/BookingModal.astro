@@ -35,8 +35,18 @@
           <option value="Абонемент">Абонемент (регулярная запись)</option>
           <option value="Локация Лаундж (ретро-ТВ)">Локация Лаундж (ретро-ТВ)</option>
           <option value="Локация Трансформер">Локация Трансформер (20+ сетапов)</option>
+          <option value="Калькулятор">Индивидуальный расчёт из калькулятора</option>
           <option value="Консультация">Нужна консультация продюсера</option>
         </select>
+      </div>
+
+      <div class="booking-calc-preview" id="bookingCalcBox" style="display: none;">
+        <div class="calc-preview-head">
+          <span class="calc-preview-label">Смета из калькулятора:</span>
+          <span class="calc-preview-badge" id="bookingCalcTotal"></span>
+        </div>
+        <pre class="calc-preview-text" id="bookingCalcText"></pre>
+        <input type="hidden" name="calc_summary" id="bookingCalcHidden" value="" />
       </div>
 
       <button type="submit" class="btn-brutal btn-gold submit-btn">
@@ -177,6 +187,47 @@
     color: #2E7D32;
     border: 1px solid #A5D6A7;
   }
+  .booking-calc-preview {
+    background: #FAF9F5;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+  .calc-preview-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #DCDAD4;
+  }
+  .calc-preview-label {
+    font-family: var(--font-accent);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--color-dark);
+    text-transform: uppercase;
+  }
+  .calc-preview-badge {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 800;
+    background: var(--color-gold-bright);
+    color: var(--color-dark);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-dark);
+  }
+  .calc-preview-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--color-stone);
+    white-space: pre-wrap;
+    max-height: 110px;
+    overflow-y: auto;
+  }
   .form-legal {
     font-size: 11px;
     color: #888;
@@ -192,19 +243,39 @@
   const selectEl = document.getElementById('bookFormat') as HTMLSelectElement | null;
   const form = document.getElementById('bookingForm') as HTMLFormElement | null;
   const statusEl = document.getElementById('formStatus');
+  const calcBox = document.getElementById('bookingCalcBox');
+  const calcText = document.getElementById('bookingCalcText');
+  const calcTotal = document.getElementById('bookingCalcTotal');
+  const calcHidden = document.getElementById('bookingCalcHidden') as HTMLInputElement | null;
 
   openBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const serviceName = btn.getAttribute('data-service-name');
-      if (serviceName && selectEl) {
-        for (let i = 0; i < selectEl.options.length; i++) {
-          if (selectEl.options[i].text.includes(serviceName)) {
-            selectEl.selectedIndex = i;
-            break;
+      const calcSummary = btn.getAttribute('data-calc-summary');
+      const calcTotalVal = btn.getAttribute('data-calc-total');
+
+      if (calcSummary && calcBox && calcText && calcTotal && calcHidden) {
+        calcBox.style.display = 'block';
+        calcText.textContent = calcSummary;
+        calcTotal.textContent = calcTotalVal || '';
+        calcHidden.value = calcSummary;
+        if (selectEl) {
+          selectEl.value = 'Калькулятор';
+        }
+      } else if (calcBox) {
+        calcBox.style.display = 'none';
+        if (calcHidden) calcHidden.value = '';
+        if (serviceName && selectEl) {
+          for (let i = 0; i < selectEl.options.length; i++) {
+            if (selectEl.options[i].text.includes(serviceName)) {
+              selectEl.selectedIndex = i;
+              break;
+            }
           }
         }
       }
+
       modal?.showModal();
     });
   });
@@ -220,6 +291,7 @@
       statusEl.className = 'form-status is-success';
       statusEl.textContent = '✓ Заявка принята! Продюсер свяжется с вами в течение 15 минут.';
       form.reset();
+      if (calcBox) calcBox.style.display = 'none';
       setTimeout(() => {
         modal?.close();
         statusEl.className = 'form-status';

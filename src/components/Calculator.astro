@@ -1,0 +1,1783 @@
+---
+// Calculator.astro — Интерактивный калькулятор студии подкастов ХВАЛИТЕ QUALITY
+// Рассчитан точно по формулам и тарифам из Google Sheets / Excel листа «Прайс»
+---
+
+<section class="calc-section" id="calculator">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">
+        <span>03.1 · ОНЛАЙН-КАЛЬКУЛЯТОР</span>
+        <span class="tag-star">★</span>
+      </div>
+      <h2 class="section-title">Калькулятор стоимости</h2>
+      <p class="section-subtitle">
+        Соберите индивидуальную конфигурацию под вашу задачу: от аренды студии до сложного видеопродакшна под ключ.
+      </p>
+    </div>
+
+    <div class="calc-layout">
+      <!-- ЛЕВАЯ КОЛОНКА: ПАРАМЕТРЫ ЗАКАЗА -->
+      <div class="calc-controls">
+        
+        <!-- 1. Что снимаем (Формат) -->
+        <div class="control-block">
+          <div class="block-header">
+            <span class="block-num">01</span>
+            <label class="block-title">Формат записи</label>
+          </div>
+          <div class="service-cards" role="radiogroup" aria-label="Формат записи">
+            <button type="button" class="service-card is-active" data-service="studio">
+              <span class="service-icon">🎙️</span>
+              <span class="service-name">Видеоподкаст в студии</span>
+              <span class="service-hint">Студия + свет + звук + операторы</span>
+            </button>
+            <button type="button" class="service-card" data-service="field">
+              <span class="service-icon">🚗</span>
+              <span class="service-name">Видеоподкаст на выезде</span>
+              <span class="service-hint">Съёмка в вашем офисе или локации</span>
+            </button>
+            <button type="button" class="service-card" data-service="audio">
+              <span class="service-icon">🎧</span>
+              <span class="service-name">Аудиоподкаст</span>
+              <span class="service-hint">Студийный звук, без видеокамер</span>
+            </button>
+            <button type="button" class="service-card" data-service="stream">
+              <span class="service-icon">📡</span>
+              <span class="service-name">Трансляция в студии</span>
+              <span class="service-hint">Прямой эфир, режиссёр и тех. спец</span>
+            </button>
+            <button type="button" class="service-card" data-service="rental">
+              <span class="service-icon">⏱️</span>
+              <span class="service-name">Аренда без оператора</span>
+              <span class="service-hint">Только локация со всем оборудованием</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Базовые параметры (Камеры / Часы / Локация) -->
+        <div class="control-block" id="blockBaseParams">
+          <div class="block-header">
+            <span class="block-num">02</span>
+            <label class="block-title">Базовые параметры</label>
+          </div>
+
+          <!-- Секция камер (для видео и стримов) -->
+          <div class="param-row" id="camerasRow">
+            <div class="param-label-group">
+              <span class="param-label">Количество камер:</span>
+              <span class="param-value-badge" id="cameraBadge">2 камеры (4K)</span>
+            </div>
+            <div class="chips-group" id="camerasChips">
+              <button type="button" class="chip-btn" data-cam="1">1 камера</button>
+              <button type="button" class="chip-btn is-active" data-cam="2">2 камеры</button>
+              <button type="button" class="chip-btn" data-cam="3">3 камеры</button>
+              <button type="button" class="chip-btn" data-cam="4">4 камеры</button>
+              <button type="button" class="chip-btn" data-cam="5">5 камер</button>
+            </div>
+          </div>
+
+          <!-- Секция времени записи -->
+          <div class="param-row" id="hoursRow">
+            <div class="param-label-group">
+              <span class="param-label">Время записи:</span>
+              <span class="param-value-badge" id="hoursBadge">2 часа</span>
+            </div>
+            <div class="chips-group" id="hoursChips">
+              <button type="button" class="chip-btn" data-hours="1">1 час</button>
+              <button type="button" class="chip-btn is-active" data-hours="2">2 часа</button>
+              <button type="button" class="chip-btn" data-hours="3">3 часа</button>
+              <button type="button" class="chip-btn" data-hours="4">4 часа</button>
+              <button type="button" class="chip-btn stream-only" data-hours="8" style="display: none;">8 часов</button>
+              <button type="button" class="chip-btn stream-only" data-hours="10" style="display: none;">10 часов</button>
+            </div>
+          </div>
+
+          <!-- Секция аренды без оператора -->
+          <div class="param-row" id="rentalRow" style="display: none;">
+            <div class="param-label-group">
+              <span class="param-label">Длительность аренды локации:</span>
+              <span class="param-value-badge" id="rentalBadge">2 часа</span>
+            </div>
+            <div class="custom-select-wrap">
+              <select id="rentalSelect" class="form-select-styled">
+                <option value="1 час">1 час — 2 300 ₽</option>
+                <option value="1,5 часа">1,5 часа — 3 450 ₽</option>
+                <option value="2 часа" selected>2 часа — 4 600 ₽</option>
+                <option value="2,5 часа">2,5 часа — 5 500 ₽</option>
+                <option value="3 часа">3 часа — 6 450 ₽</option>
+                <option value="3,5 часа">3,5 часа — 7 400 ₽</option>
+                <option value="4 часа">4 часа — 8 300 ₽</option>
+                <option value="4,5 часа">4,5 часа — 9 200 ₽</option>
+                <option value="5 часов">5 часов — 10 150 ₽</option>
+                <option value="5,5 часов">5,5 часов — 11 100 ₽</option>
+                <option value="6 часов">6 часов — 12 000 ₽</option>
+                <option value="6,5 часов">6,5 часов — 12 900 ₽</option>
+                <option value="7 часов">7 часов — 13 850 ₽</option>
+                <option value="Смена (12 часов)">Смена (12 часов) — 14 700 ₽ (−47%)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Баннер выездной логистики -->
+          <div class="delivery-notice" id="deliveryNotice" style="display: none;">
+            <span class="notice-icon">📦</span>
+            <div class="notice-text">
+              <strong>Доставка техники на выезд:</strong> включает погрузку, доставку оборудования по Екатеринбургу и монтаж сетапа (+12 000 ₽).
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Монтаж выпуска (Постпродакшн) -->
+        <div class="control-block" id="blockEditing">
+          <div class="block-header">
+            <span class="block-num">03</span>
+            <label class="block-title">Монтаж выпуска</label>
+            <span class="block-subtag">Постпродакшн</span>
+          </div>
+
+          <div class="editing-options">
+            <button type="button" class="edit-option is-active" data-editing="none">
+              <span class="edit-radio"></span>
+              <div class="edit-info">
+                <span class="edit-title">Без монтажа</span>
+                <span class="edit-desc">Отдадим исходники в 4K и чистые аудиодорожки сразу после съёмки</span>
+              </div>
+              <span class="edit-price">0 ₽</span>
+            </button>
+
+            <button type="button" class="edit-option" data-editing="simple">
+              <span class="edit-radio"></span>
+              <div class="edit-info">
+                <span class="edit-title">Простой монтаж</span>
+                <span class="edit-desc">Склейка планов, сведение звука, цветокоррекция, вырезание пауз</span>
+              </div>
+              <span class="edit-price" id="simpleEditPricePreview">от 10 000 ₽</span>
+            </button>
+
+            <button type="button" class="edit-option" data-editing="complex">
+              <span class="edit-radio"></span>
+              <div class="edit-info">
+                <span class="edit-title">Сложный монтаж с графикой</span>
+                <span class="edit-desc">Склейка + анимационные титры, инфографика, перебивки, саунд-дизайн</span>
+              </div>
+              <span class="edit-price" id="complexEditPricePreview">от 25 000 ₽</span>
+            </button>
+          </div>
+
+          <!-- Выбор длины исходника при включенном монтаже -->
+          <div class="raw-footage-wrap" id="rawFootageWrap" style="display: none;">
+            <div class="param-label-group">
+              <span class="param-label">Хронометраж исходного материала:</span>
+              <span class="param-value-badge" id="rawBadge">60 минут</span>
+            </div>
+            <div class="chips-group" id="rawMinutesChips">
+              <button type="button" class="chip-btn is-active" data-minutes="60">до 60 мин (база)</button>
+              <button type="button" class="chip-btn" data-minutes="90">90 мин (+5 000 ₽)</button>
+              <button type="button" class="chip-btn" data-minutes="120">120 мин (+10 000 ₽)</button>
+              <button type="button" class="chip-btn" data-minutes="150">150 мин (+15 000 ₽)</button>
+              <button type="button" class="chip-btn" data-minutes="180">180 мин (+20 000 ₽)</button>
+              <button type="button" class="chip-btn" data-minutes="240">240 мин (+30 000 ₽)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Дополнительные услуги (Опции) -->
+        <div class="control-block">
+          <div class="block-header">
+            <span class="block-num">04</span>
+            <label class="block-title">Дополнительные опции</label>
+          </div>
+
+          <div class="addons-grid">
+            <!-- Нарезка Reels -->
+            <div class="addon-item">
+              <div class="addon-info">
+                <span class="addon-title">Нарезки Reels / Shorts</span>
+                <span class="addon-price">1 500 ₽ / шт</span>
+              </div>
+              <div class="counter-control">
+                <button type="button" class="counter-btn" data-counter="reels" data-dir="-1" aria-label="Меньше">−</button>
+                <span class="counter-val" id="reelsVal">0</span>
+                <button type="button" class="counter-btn" data-counter="reels" data-dir="1" aria-label="Больше">+</button>
+              </div>
+            </div>
+
+            <!-- Обложки Reels -->
+            <div class="addon-item">
+              <div class="addon-info">
+                <span class="addon-title">Обложки для Reels</span>
+                <span class="addon-price">1 000 ₽ / шт</span>
+              </div>
+              <div class="counter-control">
+                <button type="button" class="counter-btn" data-counter="reelsCover" data-dir="-1" aria-label="Меньше">−</button>
+                <span class="counter-val" id="reelsCoverVal">0</span>
+                <button type="button" class="counter-btn" data-counter="reelsCover" data-dir="1" aria-label="Больше">+</button>
+              </div>
+            </div>
+
+            <!-- Обложка выпуска YouTube -->
+            <div class="addon-item">
+              <div class="addon-info">
+                <span class="addon-title">Обложка выпуска (YouTube)</span>
+                <span class="addon-price">1 800 ₽ / шт</span>
+              </div>
+              <div class="counter-control">
+                <button type="button" class="counter-btn" data-counter="videoCover" data-dir="-1" aria-label="Меньше">−</button>
+                <span class="counter-val" id="videoCoverVal">0</span>
+                <button type="button" class="counter-btn" data-counter="videoCover" data-dir="1" aria-label="Больше">+</button>
+              </div>
+            </div>
+
+            <!-- Видеотизер -->
+            <div class="addon-item">
+              <div class="addon-info">
+                <span class="addon-title">Динамичный видеотизер</span>
+                <span class="addon-price">2 000 ₽ / шт</span>
+              </div>
+              <div class="counter-control">
+                <button type="button" class="counter-btn" data-counter="teaser" data-dir="-1" aria-label="Меньше">−</button>
+                <span class="counter-val" id="teaserVal">0</span>
+                <button type="button" class="counter-btn" data-counter="teaser" data-dir="1" aria-label="Больше">+</button>
+              </div>
+            </div>
+
+            <!-- Гримёр -->
+            <div class="addon-item">
+              <div class="addon-info">
+                <span class="addon-title">Гримёр перед записью</span>
+                <span class="addon-price">1 700 ₽ / образ</span>
+              </div>
+              <div class="counter-control">
+                <button type="button" class="counter-btn" data-counter="makeup" data-dir="-1" aria-label="Меньше">−</button>
+                <span class="counter-val" id="makeupVal">0</span>
+                <button type="button" class="counter-btn" data-counter="makeup" data-dir="1" aria-label="Больше">+</button>
+              </div>
+            </div>
+
+            <!-- Бэкстейдж -->
+            <div class="addon-item">
+              <div class="addon-info">
+                <span class="addon-title">Фото / видео бэкстейдж</span>
+                <span class="addon-price">2 500 ₽ / сет</span>
+              </div>
+              <div class="counter-control">
+                <button type="button" class="counter-btn" data-counter="backstage" data-dir="-1" aria-label="Меньше">−</button>
+                <span class="counter-val" id="backstageVal">0</span>
+                <button type="button" class="counter-btn" data-counter="backstage" data-dir="1" aria-label="Больше">+</button>
+              </div>
+            </div>
+
+            <!-- Телесуфлёр (Toggle) -->
+            <div class="addon-item addon-item--toggle">
+              <div class="addon-info">
+                <span class="addon-title">Телесуфлёр на запись</span>
+                <span class="addon-price">800 ₽ на всю запись</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="togglePrompter" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <!-- Расшифровка (Toggle) -->
+            <div class="addon-item addon-item--toggle">
+              <div class="addon-info">
+                <span class="addon-title">Расшифровка выпуска (текст)</span>
+                <span class="addon-price">4 200 ₽ за выпуск</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="toggleTranscription" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <!-- Ведущий (Toggle) -->
+            <div class="addon-item addon-item--toggle">
+              <div class="addon-info">
+                <span class="addon-title">Профессиональный ведущий</span>
+                <span class="addon-price">10 000 ₽ на 2 часа</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="toggleHost" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <!-- Публикация на площадках (Select) -->
+            <div class="addon-item addon-item--select">
+              <div class="addon-info">
+                <span class="addon-title">Публикация на площадках</span>
+                <span class="addon-price">Apple, Яндекс, YouTube, VK</span>
+              </div>
+              <select id="publishingSelect" class="form-select-styled form-select-sm">
+                <option value="none" selected>Нет</option>
+                <option value="first">Первый выпуск (4 000 ₽)</option>
+                <option value="next">Следующий выпуск (1 000 ₽)</option>
+              </select>
+            </div>
+
+            <!-- Интро 2D -->
+            <div class="addon-item addon-item--select">
+              <div class="addon-info">
+                <span class="addon-title">Интро 2D-анимация</span>
+                <span class="addon-price">1 000 ₽ / секунда</span>
+              </div>
+              <select id="intro2dSelect" class="form-select-styled form-select-sm">
+                <option value="0" selected>Нет</option>
+                <option value="5">5 секунд (5 000 ₽)</option>
+                <option value="10">10 секунд (10 000 ₽)</option>
+                <option value="15">15 секунд (15 000 ₽)</option>
+                <option value="20">20 секунд (20 000 ₽)</option>
+                <option value="30">30 секунд (30 000 ₽)</option>
+              </select>
+            </div>
+
+            <!-- Интро 3D -->
+            <div class="addon-item addon-item--select">
+              <div class="addon-info">
+                <span class="addon-title">Интро 3D-графика</span>
+                <span class="addon-price">2 000 ₽ / секунда</span>
+              </div>
+              <select id="intro3dSelect" class="form-select-styled form-select-sm">
+                <option value="0" selected>Нет</option>
+                <option value="5">5 секунд (10 000 ₽)</option>
+                <option value="10">10 секунд (20 000 ₽)</option>
+                <option value="15">15 секунд (30 000 ₽)</option>
+                <option value="20">20 секунд (40 000 ₽)</option>
+                <option value="30">30 секунд (60 000 ₽)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Скидки и Наценки -->
+        <div class="control-block">
+          <div class="block-header">
+            <span class="block-num">05</span>
+            <label class="block-title">Скидки и спец-условия</label>
+          </div>
+
+          <div class="discounts-grid">
+            <div class="form-group-calc">
+              <label for="discountSelect" class="param-label">Акция / скидка:</label>
+              <select id="discountSelect" class="form-select-styled">
+                <option value="0" selected>Без скидки</option>
+                <option value="0.20">Первая запись в студии (−20%)</option>
+                <option value="0.15">Будни до 14:00 (−15%)</option>
+                <option value="0.18">Подписка от 3 месяцев (−18%)</option>
+                <option value="0.10">Постоянный клиент (−10%)</option>
+                <option value="0.05">Своя скидка (−5%)</option>
+              </select>
+            </div>
+
+            <div class="form-group-calc">
+              <label for="markupSelect" class="param-label">Наценка / срочность:</label>
+              <select id="markupSelect" class="form-select-styled">
+                <option value="0" selected>Без наценки (0%)</option>
+                <option value="0.05">+5% (базовая срочность)</option>
+                <option value="0.10">+10% (выходные дни)</option>
+                <option value="0.15">+15% (срочный монтаж 24-48ч)</option>
+                <option value="0.20">+20% (ночная смена)</option>
+                <option value="0.30">+30% (экспресс-сдача день в день)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ПРАВАЯ КОЛОНКА: ДЕТАЛИЗИРОВАННАЯ СМЕТА (RECEIPT) -->
+      <div class="calc-sidebar">
+        <div class="receipt-card">
+          <div class="receipt-top">
+            <div class="receipt-badge">ХВАЛИТЕ QUALITY · СМЕТА</div>
+            <button type="button" class="btn-reset" id="resetCalcBtn" title="Сбросить все параметры">
+              <span class="reset-icon">↺</span>
+              <span>Сбросить</span>
+            </button>
+          </div>
+
+          <h3 class="receipt-title">Ваш расчёт заказа</h3>
+          <p class="receipt-subtitle">Точная калькуляция на основе актуального прайс-листа студии</p>
+
+          <!-- Список позиций в смете -->
+          <div class="receipt-items-wrap">
+            <div class="receipt-items-list" id="receiptItemsList">
+              <!-- Заполняется динамически скриптом -->
+            </div>
+          </div>
+
+          <!-- Финансовые итоги -->
+          <div class="receipt-totals">
+            <div class="total-line">
+              <span class="total-label">Сумма по прайсу</span>
+              <span class="total-value" id="subtotalVal">0 ₽</span>
+            </div>
+
+            <div class="total-line markup-line" id="markupLine" style="display: none;">
+              <span class="total-label" id="markupLabel">Наценка (+0%)</span>
+              <span class="total-value" id="markupVal">+0 ₽</span>
+            </div>
+
+            <div class="total-line discount-line" id="discountLine" style="display: none;">
+              <span class="total-label" id="discountLabel">Скидка по акции</span>
+              <span class="total-value" id="discountVal">−0 ₽</span>
+            </div>
+
+            <div class="grand-total-block">
+              <div class="grand-total-header">
+                <span class="grand-total-label">ИТОГО К ОПЛАТЕ:</span>
+                <span class="grand-total-save" id="grandSaveBadge" style="display: none;">Экономия 0 ₽</span>
+              </div>
+              <div class="grand-total-price" id="finalTotalVal">11 500 ₽</div>
+            </div>
+          </div>
+
+          <!-- Кнопки действий -->
+          <div class="receipt-actions">
+            <button
+              type="button"
+              class="btn-brutal btn-gold receipt-book-btn"
+              id="bookCalcBtn"
+              data-open-booking
+              data-service-name="Калькулятор: индивидуальный заказ"
+            >
+              <span>Забронировать по этой смете</span>
+              <span class="btn-arrow">→</span>
+            </button>
+
+            <button type="button" class="btn-copy-calc" id="copyCalcBtn">
+              <span class="copy-icon">📋</span>
+              <span class="copy-text">Скопировать смету текстом</span>
+            </button>
+          </div>
+
+          <div class="receipt-footer-note">
+            <span>⚡ Бронь студии закрепляется после подтверждения продюсером</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .calc-section {
+    padding: 80px 0;
+    border-top: 2px solid var(--color-dark);
+    background: var(--color-bg);
+    position: relative;
+  }
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 45px;
+  }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-stone);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tag-star { color: var(--color-gold-bright); }
+  .section-title {
+    font-family: var(--font-accent);
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--color-dark);
+    letter-spacing: -0.02em;
+  }
+  @media (min-width: 768px) {
+    .section-title { font-size: 46px; }
+  }
+  .section-subtitle {
+    font-size: 16px;
+    color: var(--color-stone);
+    max-width: 640px;
+    line-height: 1.5;
+  }
+
+  /* Layout */
+  .calc-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .calc-layout {
+      grid-template-columns: 1fr 420px;
+      gap: 36px;
+    }
+  }
+
+  /* Blocks */
+  .calc-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .control-block {
+    background: #FFFFFF;
+    border: var(--border-dark);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-brutal);
+    padding: 24px;
+    transition: box-shadow 0.2s ease;
+  }
+  .control-block:hover {
+    box-shadow: var(--shadow-brutal-hover);
+  }
+  .block-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed #E5E4DF;
+  }
+  .block-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 800;
+    background: var(--color-dark);
+    color: var(--color-gold-bright);
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+  }
+  .block-title {
+    font-family: var(--font-accent);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-dark);
+  }
+  .block-subtag {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-stone);
+    text-transform: uppercase;
+  }
+
+  /* Service Cards */
+  .service-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 580px) {
+    .service-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 768px) {
+    .service-cards { grid-template-columns: repeat(3, 1fr); }
+  }
+  .service-card {
+    text-align: left;
+    background: #FAF9F5;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--color-dark);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }
+  .service-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-dark);
+    background: #FFFFFF;
+  }
+  .service-card.is-active {
+    background: var(--color-gold-bright);
+    border-color: var(--color-dark);
+    box-shadow: 3px 3px 0px var(--color-dark);
+    transform: translate(-1px, -1px);
+  }
+  .service-icon { font-size: 24px; line-height: 1; }
+  .service-name {
+    font-family: var(--font-accent);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--color-dark);
+    line-height: 1.25;
+  }
+  .service-hint {
+    font-size: 11px;
+    color: #4A4A46;
+    line-height: 1.35;
+  }
+  .service-card.is-active .service-hint {
+    color: #1B1B1B;
+    font-weight: 500;
+  }
+
+  /* Parameter Rows & Chips */
+  .param-row {
+    margin-bottom: 18px;
+  }
+  .param-row:last-child {
+    margin-bottom: 0;
+  }
+  .param-label-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .param-label {
+    font-family: var(--font-accent);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-dark);
+  }
+  .param-value-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    background: var(--color-gold-light);
+    border: 1px solid var(--color-dark);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    color: var(--color-dark);
+  }
+  .chips-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip-btn {
+    padding: 8px 16px;
+    background: #FAF9F5;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-dark);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chip-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--color-dark);
+    background: #FFFFFF;
+  }
+  .chip-btn.is-active {
+    background: var(--color-dark);
+    color: var(--color-gold-bright);
+    box-shadow: 1px 1px 0px var(--color-dark);
+  }
+
+  /* Styled Selects */
+  .custom-select-wrap {
+    width: 100%;
+  }
+  .form-select-styled {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    background: #FAF9F5;
+    font-family: var(--font-text);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-dark);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    outline: none;
+    cursor: pointer;
+  }
+  .form-select-styled:focus {
+    background: #FFFFFF;
+    border-color: var(--color-dark);
+  }
+  .form-select-sm {
+    font-size: 12px;
+    padding: 6px 10px;
+    max-width: 180px;
+  }
+
+  /* Delivery Notice */
+  .delivery-notice {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--color-gold-light);
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+  .notice-icon { font-size: 20px; }
+  .notice-text { font-size: 12px; color: var(--color-dark); line-height: 1.4; }
+
+  /* Editing Options */
+  .editing-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .edit-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: #FAF9F5;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .edit-option:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--color-dark);
+    background: #FFFFFF;
+  }
+  .edit-option.is-active {
+    background: #FFFFFF;
+    border-width: 2.5px;
+    border-color: var(--color-dark);
+    box-shadow: 3px 3px 0px var(--color-dark);
+  }
+  .edit-radio {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-dark);
+    border-radius: 50%;
+    background: #FFFFFF;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .edit-option.is-active .edit-radio::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-gold-bright);
+    box-shadow: 0 0 0 1px var(--color-dark);
+  }
+  .edit-info { flex: 1; }
+  .edit-title {
+    display: block;
+    font-family: var(--font-accent);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--color-dark);
+    margin-bottom: 2px;
+  }
+  .edit-desc {
+    display: block;
+    font-size: 11px;
+    color: var(--color-stone);
+    line-height: 1.35;
+  }
+  .edit-price {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--color-dark);
+    flex-shrink: 0;
+  }
+  .raw-footage-wrap {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 2px dashed #E5E4DF;
+  }
+
+  /* Addons Grid */
+  .addons-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 640px) {
+    .addons-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .addon-item {
+    background: #FAF9F5;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    box-shadow: 2px 2px 0px var(--color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .addon-info { flex: 1; }
+  .addon-title {
+    display: block;
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-dark);
+    margin-bottom: 2px;
+  }
+  .addon-price {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-stone);
+  }
+
+  /* Counter */
+  .counter-control {
+    display: inline-flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-pill);
+    box-shadow: 1px 1px 0px var(--color-dark);
+  }
+  .counter-btn {
+    width: 28px;
+    height: 28px;
+    font-family: var(--font-accent);
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-dark);
+    transition: background 0.15s ease;
+  }
+  .counter-btn:hover {
+    background: var(--color-gold-light);
+  }
+  .counter-val {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 800;
+    min-width: 26px;
+    text-align: center;
+    color: var(--color-dark);
+  }
+
+  /* Toggle Switch */
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #DCDAD4;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-pill);
+    box-shadow: 1px 1px 0px var(--color-dark);
+    transition: 0.2s ease;
+  }
+  .toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--color-dark);
+    border-radius: 50%;
+    transition: 0.2s ease;
+  }
+  .toggle-switch input:checked + .toggle-slider {
+    background-color: var(--color-gold-bright);
+  }
+  .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(18px);
+    background-color: var(--color-dark);
+  }
+
+  /* Discounts Grid */
+  .discounts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 640px) {
+    .discounts-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .form-group-calc {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* SIDEBAR: RECEIPT CARD */
+  .calc-sidebar {
+    position: sticky;
+    top: 90px;
+  }
+  .receipt-card {
+    background: #FFFFFF;
+    border: var(--border-dark-thick);
+    border-radius: var(--radius-card-lg);
+    box-shadow: var(--shadow-brutal-lg);
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .receipt-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .receipt-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    background: var(--color-dark);
+    color: var(--color-gold-bright);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.05em;
+  }
+  .btn-reset {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    background: #FFF1F0;
+    color: #E53935;
+    border: 1.5px solid #E53935;
+    border-radius: var(--radius-pill);
+    padding: 3px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 1px 1px 0px #E53935;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-reset:hover {
+    background: #E53935;
+    color: #FFFFFF;
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0px var(--color-dark);
+  }
+  .reset-icon { font-size: 13px; font-weight: 900; }
+  .receipt-title {
+    font-family: var(--font-accent);
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--color-dark);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .receipt-subtitle {
+    font-size: 12px;
+    color: var(--color-stone);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  /* Receipt Items */
+  .receipt-items-wrap {
+    border-top: 2px dashed #E5E4DF;
+    border-bottom: 2px dashed #E5E4DF;
+    padding: 14px 0;
+    margin-bottom: 16px;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .receipt-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  :global(.receipt-line) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  :global(.receipt-line-name) {
+    color: var(--color-dark);
+    font-weight: 500;
+  }
+  :global(.receipt-line-price) {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    color: var(--color-dark);
+    white-space: nowrap;
+  }
+
+  /* Receipt Totals */
+  .receipt-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .total-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--color-stone);
+    font-weight: 600;
+  }
+  .total-value {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    color: var(--color-dark);
+  }
+  .markup-line .total-value {
+    color: #D97706;
+  }
+  .discount-line .total-value {
+    color: #16A34A;
+  }
+  .grand-total-block {
+    background: #FAF9F5;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    box-shadow: 2px 2px 0px var(--color-dark);
+    margin-top: 6px;
+  }
+  .grand-total-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .grand-total-label {
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-stone);
+    letter-spacing: 0.05em;
+  }
+  .grand-total-save {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    background: #DCFCE7;
+    color: #166534;
+    border: 1px solid #16A34A;
+    padding: 2px 6px;
+    border-radius: var(--radius-pill);
+  }
+  .grand-total-price {
+    font-family: var(--font-accent);
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--color-dark);
+    line-height: 1.1;
+  }
+
+  /* Receipt Actions */
+  .receipt-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .receipt-book-btn {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-arrow { font-size: 18px; font-weight: 900; }
+  .btn-copy-calc {
+    background: #FAF9F5;
+    border: 2px solid var(--color-dark);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-dark);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-copy-calc:hover {
+    background: #FFFFFF;
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--color-dark);
+  }
+  .btn-copy-calc.is-copied {
+    background: #DCFCE7;
+    color: #166534;
+    border-color: #16A34A;
+  }
+  .receipt-footer-note {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--color-stone);
+    line-height: 1.35;
+  }
+</style>
+
+<script>
+  // Данные расчёта из листа «Прайс»
+  const PRICING = {
+    studio: {
+      1: { 1: 5000, 2: 9500, 3: 13500, 4: 17500 },
+      2: { 1: 6000, 2: 11500, 3: 16500, 4: 21500 },
+      3: { 1: 7000, 2: 13500, 3: 19500, 4: 25000 },
+      4: { 1: 8000, 2: 15500, 3: 22500, 4: 29500 },
+      5: { 1: 9000, 2: 18000, 3: 25500, 4: 33500 }
+    },
+    field: {
+      1: { 1: 5000, 2: 9500, 3: 13500, 4: 17500 },
+      2: { 1: 6000, 2: 11500, 3: 16500, 4: 21500 },
+      3: { 1: 7000, 2: 13500, 3: 19500, 4: 25000 },
+      4: { 1: 8000, 2: 15500, 3: 22500, 4: 29500 },
+      5: { 1: 9000, 2: 18000, 3: 25500, 4: 33500 }
+    },
+    fieldDelivery: 12000,
+    audio: {
+      1: 2000,
+      2: 4000,
+      3: 6000,
+      4: 8000
+    },
+    stream: {
+      1: { 1: 8000, 2: 13500, 3: 17500, 4: 21500, 8: 37500, 10: 45500 },
+      2: { 1: 11000, 2: 17000, 3: 22000, 4: 27000, 8: 47000, 10: 57000 },
+      3: { 1: 14000, 2: 20000, 3: 26000, 4: 32000, 8: 56000, 10: 68000 },
+      4: { 1: 17000, 2: 23000, 3: 30000, 4: 37000, 8: 65000, 10: 79000 }
+    },
+    rental: {
+      '1 час': 2300,
+      '1,5 часа': 3450,
+      '2 часа': 4600,
+      '2,5 часа': 5500,
+      '3 часа': 6450,
+      '3,5 часа': 7400,
+      '4 часа': 8300,
+      '4,5 часа': 9200,
+      '5 часов': 10150,
+      '5,5 часов': 11100,
+      '6 часов': 12000,
+      '6,5 часов': 12900,
+      '7 часов': 13850,
+      'Смена (12 часов)': 14700
+    },
+    editing: {
+      simple: { 1: 10000, 23: 15000, 45: 20000 },
+      complex: { 1: 25000, 23: 35000, 45: 43000 },
+      extraPer30Min: 5000
+    },
+    addons: {
+      reels: 1500,
+      reelsCover: 1000,
+      videoCover: 1800,
+      teaser: 2000,
+      publishingFirst: 4000,
+      publishingNext: 1000,
+      transcription: 4200,
+      prompter: 800,
+      host: 10000,
+      makeup: 1700,
+      intro2d: 1000,
+      intro3d: 2000,
+      backstage: 2500
+    }
+  };
+
+  // Дефолтное состояние калькулятора (из листа «Как сбросить»)
+  const DEFAULT_STATE = {
+    service: 'studio',      // 'studio' | 'field' | 'audio' | 'stream' | 'rental'
+    cameras: 2,             // 1..5
+    hours: 2,               // 1..4, 8, 10
+    rentalTime: '2 часа',
+    editing: 'none',        // 'none' | 'simple' | 'complex'
+    rawMinutes: 60,
+    reels: 0,
+    reelsCover: 0,
+    videoCover: 0,
+    teaser: 0,
+    makeup: 0,
+    backstage: 0,
+    prompter: false,
+    transcription: false,
+    host: false,
+    publishing: 'none',     // 'none' | 'first' | 'next'
+    intro2d: 0,             // 0, 5, 10, 15, 20, 30
+    intro3d: 0,             // 0, 5, 10, 15, 20, 30
+    discountRate: 0,
+    markupRate: 0
+  };
+
+  let state = { ...DEFAULT_STATE };
+
+  // DOM элементы
+  const serviceCards = document.querySelectorAll('.service-card');
+  const camerasRow = document.getElementById('camerasRow');
+  const camerasChips = document.querySelectorAll('#camerasChips .chip-btn');
+  const cameraBadge = document.getElementById('cameraBadge');
+  const hoursRow = document.getElementById('hoursRow');
+  const hoursChips = document.querySelectorAll('#hoursChips .chip-btn');
+  const hoursBadge = document.getElementById('hoursBadge');
+  const streamOnlyHours = document.querySelectorAll('.stream-only');
+  const rentalRow = document.getElementById('rentalRow');
+  const rentalSelect = document.getElementById('rentalSelect') as HTMLSelectElement | null;
+  const rentalBadge = document.getElementById('rentalBadge');
+  const deliveryNotice = document.getElementById('deliveryNotice');
+  const blockEditing = document.getElementById('blockEditing');
+  const editOptions = document.querySelectorAll('.edit-option');
+  const rawFootageWrap = document.getElementById('rawFootageWrap');
+  const rawMinutesChips = document.querySelectorAll('#rawMinutesChips .chip-btn');
+  const rawBadge = document.getElementById('rawBadge');
+  const simpleEditPreview = document.getElementById('simpleEditPricePreview');
+  const complexEditPreview = document.getElementById('complexEditPricePreview');
+
+  // Допы
+  const counterBtns = document.querySelectorAll('.counter-btn');
+  const togglePrompter = document.getElementById('togglePrompter') as HTMLInputElement | null;
+  const toggleTranscription = document.getElementById('toggleTranscription') as HTMLInputElement | null;
+  const toggleHost = document.getElementById('toggleHost') as HTMLInputElement | null;
+  const publishingSelect = document.getElementById('publishingSelect') as HTMLSelectElement | null;
+  const intro2dSelect = document.getElementById('intro2dSelect') as HTMLSelectElement | null;
+  const intro3dSelect = document.getElementById('intro3dSelect') as HTMLSelectElement | null;
+  const discountSelect = document.getElementById('discountSelect') as HTMLSelectElement | null;
+  const markupSelect = document.getElementById('markupSelect') as HTMLSelectElement | null;
+
+  // Смета
+  const receiptItemsList = document.getElementById('receiptItemsList');
+  const subtotalVal = document.getElementById('subtotalVal');
+  const markupLine = document.getElementById('markupLine');
+  const markupLabel = document.getElementById('markupLabel');
+  const markupVal = document.getElementById('markupVal');
+  const discountLine = document.getElementById('discountLine');
+  const discountLabel = document.getElementById('discountLabel');
+  const discountVal = document.getElementById('discountVal');
+  const grandSaveBadge = document.getElementById('grandSaveBadge');
+  const finalTotalVal = document.getElementById('finalTotalVal');
+  const resetCalcBtn = document.getElementById('resetCalcBtn');
+  const bookCalcBtn = document.getElementById('bookCalcBtn');
+  const copyCalcBtn = document.getElementById('copyCalcBtn');
+
+  function fmtPrice(num: number) {
+    return num.toLocaleString('ru-RU') + ' ₽';
+  }
+
+  function pluralCam(n: number) {
+    if (n === 1) return 'камера';
+    if (n >= 2 && n <= 4) return 'камеры';
+    return 'камер';
+  }
+
+  function pluralHour(n: number) {
+    if (n === 1) return 'час';
+    if (n >= 2 && n <= 4) return 'часа';
+    return 'часов';
+  }
+
+  function pluralImages(n: number) {
+    if (n === 1) return 'образ';
+    if (n >= 2 && n <= 4) return 'образа';
+    return 'образов';
+  }
+
+  function updateUIControls() {
+    // 1. Формат услуги
+    serviceCards.forEach((btn) => {
+      const s = btn.getAttribute('data-service');
+      btn.classList.toggle('is-active', s === state.service);
+    });
+
+    // 2. Видимость блоков в зависимости от формата
+    const isRental = state.service === 'rental';
+    const isAudio = state.service === 'audio';
+    const isStream = state.service === 'stream';
+    const isField = state.service === 'field';
+
+    if (camerasRow) {
+      camerasRow.style.display = (isRental || isAudio) ? 'none' : 'block';
+    }
+    if (hoursRow) {
+      hoursRow.style.display = isRental ? 'none' : 'block';
+    }
+    if (rentalRow) {
+      rentalRow.style.display = isRental ? 'block' : 'none';
+    }
+    if (deliveryNotice) {
+      deliveryNotice.style.display = isField ? 'flex' : 'none';
+    }
+    if (blockEditing) {
+      blockEditing.style.display = (isRental || isAudio) ? 'none' : 'block';
+    }
+
+    // Лимиты камер для стрима (макс 4 камеры)
+    const cam5Btn = document.querySelector('#camerasChips [data-cam="5"]') as HTMLElement | null;
+    if (cam5Btn) {
+      cam5Btn.style.display = isStream ? 'none' : 'inline-block';
+      if (isStream && state.cameras === 5) {
+        state.cameras = 4;
+      }
+    }
+
+    // Часы для стрима (8 и 10 часов)
+    streamOnlyHours.forEach((el) => {
+      (el as HTMLElement).style.display = isStream ? 'inline-block' : 'none';
+    });
+    if (!isStream && (state.hours === 8 || state.hours === 10)) {
+      state.hours = 4;
+    }
+
+    // Активные чипсы камер
+    camerasChips.forEach((btn) => {
+      const c = Number(btn.getAttribute('data-cam'));
+      btn.classList.toggle('is-active', c === state.cameras);
+    });
+    if (cameraBadge) {
+      cameraBadge.textContent = `${state.cameras} ${pluralCam(state.cameras)} (4K)`;
+    }
+
+    // Активные чипсы часов
+    hoursChips.forEach((btn) => {
+      const h = Number(btn.getAttribute('data-hours'));
+      btn.classList.toggle('is-active', h === state.hours);
+    });
+    if (hoursBadge) {
+      hoursBadge.textContent = `${state.hours} ${pluralHour(state.hours)}`;
+    }
+
+    // Аренда селект
+    if (rentalSelect) {
+      rentalSelect.value = state.rentalTime;
+      if (rentalBadge) rentalBadge.textContent = state.rentalTime;
+    }
+
+    // Монтаж
+    editOptions.forEach((btn) => {
+      const mode = btn.getAttribute('data-editing');
+      btn.classList.toggle('is-active', mode === state.editing);
+    });
+    if (rawFootageWrap) {
+      rawFootageWrap.style.display = state.editing !== 'none' ? 'block' : 'none';
+    }
+    rawMinutesChips.forEach((btn) => {
+      const m = Number(btn.getAttribute('data-minutes'));
+      btn.classList.toggle('is-active', m === state.rawMinutes);
+    });
+    if (rawBadge) {
+      rawBadge.textContent = `${state.rawMinutes} минут`;
+    }
+
+    // Превью цен монтажа по текущему кол-ву камер
+    const camGroup = state.cameras === 1 ? 1 : (state.cameras <= 3 ? 23 : 45);
+    if (simpleEditPreview) {
+      simpleEditPreview.textContent = fmtPrice(PRICING.editing.simple[camGroup]);
+    }
+    if (complexEditPreview) {
+      complexEditPreview.textContent = fmtPrice(PRICING.editing.complex[camGroup]);
+    }
+
+    // Счетчики
+    const reelsVal = document.getElementById('reelsVal');
+    if (reelsVal) reelsVal.textContent = String(state.reels);
+    const reelsCoverVal = document.getElementById('reelsCoverVal');
+    if (reelsCoverVal) reelsCoverVal.textContent = String(state.reelsCover);
+    const videoCoverVal = document.getElementById('videoCoverVal');
+    if (videoCoverVal) videoCoverVal.textContent = String(state.videoCover);
+    const teaserVal = document.getElementById('teaserVal');
+    if (teaserVal) teaserVal.textContent = String(state.teaser);
+    const makeupVal = document.getElementById('makeupVal');
+    if (makeupVal) makeupVal.textContent = String(state.makeup);
+    const backstageVal = document.getElementById('backstageVal');
+    if (backstageVal) backstageVal.textContent = String(state.backstage);
+
+    // Тогглы
+    if (togglePrompter) togglePrompter.checked = state.prompter;
+    if (toggleTranscription) toggleTranscription.checked = state.transcription;
+    if (toggleHost) toggleHost.checked = state.host;
+
+    // Селекты
+    if (publishingSelect) publishingSelect.value = state.publishing;
+    if (intro2dSelect) intro2dSelect.value = String(state.intro2d);
+    if (intro3dSelect) intro3dSelect.value = String(state.intro3d);
+    if (discountSelect) discountSelect.value = String(state.discountRate);
+    if (markupSelect) markupSelect.value = String(state.markupRate);
+  }
+
+  function calculate() {
+    let basePrice = 0;
+    let deliveryPrice = 0;
+    let editingPrice = 0;
+    const items: { name: string; price: number }[] = [];
+
+    // 1. Основная услуга
+    if (state.service === 'studio') {
+      basePrice = PRICING.studio[state.cameras]?.[state.hours] || 0;
+      items.push({
+        name: `Видеоподкаст в студии (${state.cameras} ${pluralCam(state.cameras)}, ${state.hours} ${pluralHour(state.hours)})`,
+        price: basePrice
+      });
+    } else if (state.service === 'field') {
+      basePrice = PRICING.field[state.cameras]?.[state.hours] || 0;
+      items.push({
+        name: `Видеоподкаст на выезде (${state.cameras} ${pluralCam(state.cameras)}, ${state.hours} ${pluralHour(state.hours)})`,
+        price: basePrice
+      });
+      deliveryPrice = PRICING.fieldDelivery;
+      items.push({
+        name: 'Доставка и монтаж техники на выезде',
+        price: deliveryPrice
+      });
+    } else if (state.service === 'audio') {
+      basePrice = PRICING.audio[state.hours] || 0;
+      items.push({
+        name: `Аудиоподкаст в студии (${state.hours} ${pluralHour(state.hours)})`,
+        price: basePrice
+      });
+    } else if (state.service === 'stream') {
+      basePrice = PRICING.stream[state.cameras]?.[state.hours] || 0;
+      items.push({
+        name: `Прямая трансляция (${state.cameras} ${pluralCam(state.cameras)}, ${state.hours} ${pluralHour(state.hours)})`,
+        price: basePrice
+      });
+    } else if (state.service === 'rental') {
+      basePrice = PRICING.rental[state.rentalTime] || 0;
+      items.push({
+        name: `Аренда студии без оператора (${state.rentalTime})`,
+        price: basePrice
+      });
+    }
+
+    // 2. Монтаж (только для видео и стрима)
+    if (['studio', 'field', 'stream'].includes(state.service) && state.editing !== 'none') {
+      const camGroup = state.cameras === 1 ? 1 : (state.cameras <= 3 ? 23 : 45);
+      const baseEdit = state.editing === 'simple'
+        ? PRICING.editing.simple[camGroup]
+        : PRICING.editing.complex[camGroup];
+
+      const extraSteps = Math.max(0, Math.ceil((state.rawMinutes - 60) / 30));
+      const extraCost = extraSteps * PRICING.editing.extraPer30Min;
+      editingPrice = baseEdit + extraCost;
+
+      const editTitle = state.editing === 'simple' ? 'Простой монтаж' : 'Сложный монтаж с графикой';
+      items.push({
+        name: `${editTitle} (${state.rawMinutes} мин исходника)`,
+        price: editingPrice
+      });
+    }
+
+    // 3. Дополнительные опции
+    let addonsSum = 0;
+    if (state.reels > 0) {
+      const cost = state.reels * PRICING.addons.reels;
+      items.push({ name: `Нарезки Reels / Shorts (${state.reels} шт)`, price: cost });
+      addonsSum += cost;
+    }
+    if (state.reelsCover > 0) {
+      const cost = state.reelsCover * PRICING.addons.reelsCover;
+      items.push({ name: `Обложки для Reels (${state.reelsCover} шт)`, price: cost });
+      addonsSum += cost;
+    }
+    if (state.videoCover > 0) {
+      const cost = state.videoCover * PRICING.addons.videoCover;
+      items.push({ name: `Обложка выпуска YouTube (${state.videoCover} шт)`, price: cost });
+      addonsSum += cost;
+    }
+    if (state.teaser > 0) {
+      const cost = state.teaser * PRICING.addons.teaser;
+      items.push({ name: `Видеотизер выпуска (${state.teaser} шт)`, price: cost });
+      addonsSum += cost;
+    }
+    if (state.publishing === 'first') {
+      items.push({ name: 'Публикация на площадках (1-й выпуск)', price: PRICING.addons.publishingFirst });
+      addonsSum += PRICING.addons.publishingFirst;
+    } else if (state.publishing === 'next') {
+      items.push({ name: 'Публикация на площадках (след. выпуск)', price: PRICING.addons.publishingNext });
+      addonsSum += PRICING.addons.publishingNext;
+    }
+    if (state.transcription) {
+      items.push({ name: 'Расшифровка выпуска в текст', price: PRICING.addons.transcription });
+      addonsSum += PRICING.addons.transcription;
+    }
+    if (state.prompter) {
+      items.push({ name: 'Телесуфлёр на запись', price: PRICING.addons.prompter });
+      addonsSum += PRICING.addons.prompter;
+    }
+    if (state.host) {
+      items.push({ name: 'Профессиональный ведущий (2 ч)', price: PRICING.addons.host });
+      addonsSum += PRICING.addons.host;
+    }
+    if (state.makeup > 0) {
+      const cost = state.makeup * PRICING.addons.makeup;
+      items.push({ name: `Гримёр (${state.makeup} ${pluralImages(state.makeup)})`, price: cost });
+      addonsSum += cost;
+    }
+    if (state.intro2d > 0) {
+      const cost = state.intro2d * PRICING.addons.intro2d;
+      items.push({ name: `Интро 2D-анимация (${state.intro2d} сек)`, price: cost });
+      addonsSum += cost;
+    }
+    if (state.intro3d > 0) {
+      const cost = state.intro3d * PRICING.addons.intro3d;
+      items.push({ name: `Интро 3D-графика (${state.intro3d} сек)`, price: cost });
+      addonsSum += cost;
+    }
+    if (state.backstage > 0) {
+      const cost = state.backstage * PRICING.addons.backstage;
+      items.push({ name: `Фото/видео бэкстейдж (${state.backstage} шт)`, price: cost });
+      addonsSum += cost;
+    }
+
+    // Сумма по прайсу
+    const subtotal = basePrice + deliveryPrice + editingPrice + addonsSum;
+
+    // Наценка
+    const markupAmount = Math.round(subtotal * state.markupRate);
+
+    // Скидка по акции
+    const discountAmount = Math.round((subtotal + markupAmount) * state.discountRate);
+
+    // Итого
+    const finalTotal = Math.max(0, Math.round((subtotal + markupAmount - discountAmount) / 100) * 100);
+
+    // Рендер позиций сметы
+    if (receiptItemsList) {
+      receiptItemsList.innerHTML = items.map((it) => `
+        <div class="receipt-line">
+          <span class="receipt-line-name">• ${it.name}</span>
+          <span class="receipt-line-price">${fmtPrice(it.price)}</span>
+        </div>
+      `).join('');
+    }
+
+    if (subtotalVal) subtotalVal.textContent = fmtPrice(subtotal);
+
+    if (markupLine && markupVal && markupLabel) {
+      if (state.markupRate > 0) {
+        markupLine.style.display = 'flex';
+        markupLabel.textContent = `Наценка (+${Math.round(state.markupRate * 100)}%)`;
+        markupVal.textContent = `+${fmtPrice(markupAmount)}`;
+      } else {
+        markupLine.style.display = 'none';
+      }
+    }
+
+    if (discountLine && discountVal && discountLabel) {
+      if (state.discountRate > 0) {
+        discountLine.style.display = 'flex';
+        discountLabel.textContent = `Скидка по акции (−${Math.round(state.discountRate * 100)}%)`;
+        discountVal.textContent = `−${fmtPrice(discountAmount)}`;
+      } else {
+        discountLine.style.display = 'none';
+      }
+    }
+
+    if (grandSaveBadge) {
+      if (discountAmount > 0) {
+        grandSaveBadge.style.display = 'inline-block';
+        grandSaveBadge.textContent = `Экономия ${fmtPrice(discountAmount)}`;
+      } else {
+        grandSaveBadge.style.display = 'none';
+      }
+    }
+
+    if (finalTotalVal) {
+      finalTotalVal.textContent = fmtPrice(finalTotal);
+    }
+
+    // Сохраняем текстовое описание для модалки и копирования
+    const summaryText = items.map(i => `• ${i.name}: ${fmtPrice(i.price)}`).join('\n')
+      + `\n------------------------`
+      + `\nСумма: ${fmtPrice(subtotal)}`
+      + (state.markupRate > 0 ? `\nНаценка (+${Math.round(state.markupRate*100)}%): +${fmtPrice(markupAmount)}` : '')
+      + (state.discountRate > 0 ? `\nСкидка (−${Math.round(state.discountRate*100)}%): −${fmtPrice(discountAmount)}` : '')
+      + `\nИТОГО: ${fmtPrice(finalTotal)}`;
+
+    if (bookCalcBtn) {
+      bookCalcBtn.setAttribute('data-calc-summary', summaryText);
+      bookCalcBtn.setAttribute('data-calc-total', fmtPrice(finalTotal));
+      bookCalcBtn.setAttribute('data-service-name', `Расчёт из калькулятора (${fmtPrice(finalTotal)})`);
+    }
+
+    return { subtotal, markupAmount, discountAmount, finalTotal, items, summaryText };
+  }
+
+  // ОБРАБОТЧИКИ СОБЫТИЙ
+
+  // 1. Формат
+  serviceCards.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const s = btn.getAttribute('data-service');
+      if (s) {
+        state.service = s;
+        updateUIControls();
+        calculate();
+      }
+    });
+  });
+
+  // 2. Камеры
+  camerasChips.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const c = Number(btn.getAttribute('data-cam'));
+      if (c) {
+        state.cameras = c;
+        updateUIControls();
+        calculate();
+      }
+    });
+  });
+
+  // 3. Часы
+  hoursChips.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const h = Number(btn.getAttribute('data-hours'));
+      if (h) {
+        state.hours = h;
+        updateUIControls();
+        calculate();
+      }
+    });
+  });
+
+  // 4. Аренда
+  rentalSelect?.addEventListener('change', (e) => {
+    state.rentalTime = (e.target as HTMLSelectElement).value;
+    updateUIControls();
+    calculate();
+  });
+
+  // 5. Монтаж
+  editOptions.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const mode = btn.getAttribute('data-editing');
+      if (mode) {
+        state.editing = mode;
+        updateUIControls();
+        calculate();
+      }
+    });
+  });
+
+  // 6. Хронометраж
+  rawMinutesChips.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const m = Number(btn.getAttribute('data-minutes'));
+      if (m) {
+        state.rawMinutes = m;
+        updateUIControls();
+        calculate();
+      }
+    });
+  });
+
+  // 7. Счетчики
+  counterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const counterKey = btn.getAttribute('data-counter') as keyof typeof state;
+      const dir = Number(btn.getAttribute('data-dir')) || 0;
+      if (counterKey && typeof state[counterKey] === 'number') {
+        const current = (state[counterKey] as number);
+        const next = Math.max(0, Math.min(30, current + dir));
+        (state[counterKey] as number) = next;
+        updateUIControls();
+        calculate();
+      }
+    });
+  });
+
+  // 8. Тогглы
+  togglePrompter?.addEventListener('change', (e) => {
+    state.prompter = (e.target as HTMLInputElement).checked;
+    calculate();
+  });
+  toggleTranscription?.addEventListener('change', (e) => {
+    state.transcription = (e.target as HTMLInputElement).checked;
+    calculate();
+  });
+  toggleHost?.addEventListener('change', (e) => {
+    state.host = (e.target as HTMLInputElement).checked;
+    calculate();
+  });
+
+  // 9. Селекты
+  publishingSelect?.addEventListener('change', (e) => {
+    state.publishing = (e.target as HTMLSelectElement).value;
+    calculate();
+  });
+  intro2dSelect?.addEventListener('change', (e) => {
+    state.intro2d = Number((e.target as HTMLSelectElement).value);
+    calculate();
+  });
+  intro3dSelect?.addEventListener('change', (e) => {
+    state.intro3d = Number((e.target as HTMLSelectElement).value);
+    calculate();
+  });
+  discountSelect?.addEventListener('change', (e) => {
+    state.discountRate = Number((e.target as HTMLSelectElement).value);
+    calculate();
+  });
+  markupSelect?.addEventListener('change', (e) => {
+    state.markupRate = Number((e.target as HTMLSelectElement).value);
+    calculate();
+  });
+
+  // 10. Кнопка «Сбросить»
+  resetCalcBtn?.addEventListener('click', () => {
+    state = { ...DEFAULT_STATE };
+    updateUIControls();
+    calculate();
+  });
+
+  // 11. Кнопка «Скопировать смету текстом»
+  copyCalcBtn?.addEventListener('click', async () => {
+    const res = calculate();
+    const textToCopy = `ХВАЛИТЕ QUALITY — Расчёт сметы подкаста:\n\n${res.summaryText}\n\nЗабронировать: +7 992 341-05-20 | Екатеринбург, Ботаническая 19`;
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      copyCalcBtn.classList.add('is-copied');
+      const label = copyCalcBtn.querySelector('.copy-text');
+      if (label) label.textContent = '✓ Смета скопирована!';
+      setTimeout(() => {
+        copyCalcBtn.classList.remove('is-copied');
+        if (label) label.textContent = 'Скопировать смету текстом';
+      }, 2500);
+    } catch {
+      alert('Не удалось скопировать в буфер обмена');
+    }
+  });
+
+  // Инициализация при загрузке
+  updateUIControls();
+  calculate();
+</script>
