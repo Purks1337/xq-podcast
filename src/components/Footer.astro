@@ -23,6 +23,14 @@ import { getAssetUrl } from '../utils/paths';
         <span class="footer-city">г. Екатеринбург, ул. Ботаническая 19</span>
       </div>
 
+      <!-- Мессенджеры -->
+      <div class="footer-messengers">
+        <a href="https://t.me/hvaliteq" target="_blank" rel="noopener noreferrer" class="footer-soc-link" aria-label="Telegram">Telegram</a>
+        <a href="https://wa.me/79923410520" target="_blank" rel="noopener noreferrer" class="footer-soc-link" aria-label="WhatsApp">WhatsApp</a>
+        <a href="https://max.ru/u/f9LHodD0cOJT-TeHrCNk13ow_3qSyo8AgTNJvPhJUqCh7BtiIubqkJt8zaw" target="_blank" rel="noopener noreferrer" class="footer-soc-link" aria-label="Мессенджер MAX">MAX</a>
+        <a href="https://vk.com/hvaliteq" target="_blank" rel="noopener noreferrer" class="footer-soc-link" aria-label="VKontakte">VK</a>
+      </div>
+
       <!-- Кнопка «Записать подкаст» -->
       <div class="footer-action">
         <button type="button" class="btn-brutal btn-gold" data-open-booking>
@@ -35,10 +43,12 @@ import { getAssetUrl } from '../utils/paths';
     <!-- Разделитель и нижняя строка -->
     <div class="footer-bottom">
       <p class="copyright">
-        © {new Date().getFullYear()} Студия подкастов «ХВАЛИТЕ QUALITY». Все права защищены.
+        © {new Date().getFullYear()} Студия подкастов «ХВАЛИТЕ QUALITY». ИП Аккерман М.Э. Все права защищены.
       </p>
       <div class="footer-links">
-        <a href="#privacy" class="footer-link" id="privacyLink">Политика конфиденциальности</a>
+        <a href={getAssetUrl('/privacy/')} class="footer-link">Политика конфиденциальности</a>
+        <span class="dot-sep">·</span>
+        <a href={getAssetUrl('/privacy/#consent')} class="footer-link">Согласие на обработку данных</a>
         <span class="dot-sep">·</span>
         <a href="https://quality-media.ru" target="_blank" rel="noopener noreferrer" class="footer-link">quality-media.ru</a>
       </div>
@@ -131,6 +141,29 @@ import { getAssetUrl } from '../utils/paths';
     font-size: 12px;
     color: #888;
   }
+  .footer-messengers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-soc-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: #D1D0CA;
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .footer-soc-link:hover {
+    color: #09090A;
+    background: #FFFFFF;
+    border-color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
   .footer-bottom {
     display: flex;
     flex-direction: column;

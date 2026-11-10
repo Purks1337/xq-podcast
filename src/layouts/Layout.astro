@@ -43,82 +43,181 @@ const ogImage = new URL(getAssetUrl('/assets/photos/lounge/DSC02577.jpg'), Astro
     <meta property="og:image" content={ogImage} />
   </head>
   <body>
-    <!-- Side brand strip (inspired by ref/service poster style) -->
-    <aside class="side-strip" aria-hidden="true">
-      <div class="side-strip__inner">
-        <span class="side-strip__star">✦</span>
-        <span class="side-strip__text">ВИДЕОПОДКАСТЫ — ХВАЛИТЕ QUALITY — ЕКАТЕРИНБУРГ</span>
-        <span class="side-strip__badge">HQ</span>
-      </div>
-    </aside>
+
 
     <div class="page-wrapper">
       <slot />
     </div>
+
+    <!-- Cookie Notice Banner -->
+    <div id="cookie-banner" class="cookie-banner" role="region" aria-label="Уведомление о файлах cookie">
+      <div class="cookie-header">
+        <div class="cookie-tag">
+          <span>🍪</span>
+          <span>ФАЙЛЫ COOKIE</span>
+        </div>
+        <button type="button" id="cookie-close-btn" class="cookie-close-btn" aria-label="Закрыть уведомление">✕</button>
+      </div>
+      <div class="cookie-body">
+        <p class="cookie-text">
+          Мы используем cookie, чтобы сайт, калькулятор и видеоплееры работали стабильно и быстро. Подробнее — в <a href={getAssetUrl('/privacy/#cookies')} class="cookie-link">политике использования cookie</a>.
+        </p>
+        <div class="cookie-footer-row">
+          <button type="button" id="cookie-accept-btn" class="btn-brutal btn-gold cookie-accept-btn">
+            <span>Понятно</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function() {
+        try {
+          var COOKIE_KEY = 'xq_podcast_cookie_ack_v1';
+          var banner = document.getElementById('cookie-banner');
+          if (banner) {
+            if (!localStorage.getItem(COOKIE_KEY)) {
+              banner.classList.add('is-visible');
+            }
+            var accept = function() {
+              try { localStorage.setItem(COOKIE_KEY, '1'); } catch(e) {}
+              banner.classList.remove('is-visible');
+            };
+            var btn = document.getElementById('cookie-accept-btn');
+            if (btn) btn.onclick = accept;
+            var closeBtn = document.getElementById('cookie-close-btn');
+            if (closeBtn) closeBtn.onclick = accept;
+          }
+        } catch(e) {}
+      })();
+    </script>
   </body>
 </html>
 
 <style>
-  /* Side technical strip from the ref/service posters */
-  .side-strip {
-    display: none;
-  }
 
-  @media (min-width: 1280px) {
-    .side-strip {
-      display: flex;
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 44px;
-      background-color: var(--color-dark);
-      z-index: 100;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-      align-items: center;
-      justify-content: center;
-    }
-
-    .side-strip__inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      transform: rotate(-90deg);
-      white-space: nowrap;
-    }
-
-    .side-strip__star {
-      color: var(--color-gold-bright);
-      font-size: 14px;
-    }
-
-    .side-strip__text {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      color: rgba(228, 227, 222, 0.7);
-      text-transform: uppercase;
-    }
-
-    .side-strip__badge {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 800;
-      background: var(--color-gold-bright);
-      color: var(--color-dark);
-      padding: 1px 6px;
-      border-radius: 4px;
-    }
-
-    .page-wrapper {
-      margin-left: 44px;
-    }
-  }
 
   .page-wrapper {
     position: relative;
     min-height: 100vh;
+  }
+
+  /* 🍪 Cookie Banner */
+  .cookie-banner {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    left: auto;
+    width: calc(100% - 48px);
+    max-width: 440px;
+    z-index: 99999;
+    background: #FFFFFF;
+    border: var(--border-dark);
+    border-radius: var(--radius-card);
+    box-shadow: 6px 6px 0px var(--color-dark);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .cookie-banner.is-visible {
+    display: flex !important;
+    animation: cookieFadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @media (max-width: 640px) {
+    .cookie-banner {
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      width: auto;
+      max-width: none;
+    }
+  }
+
+  @keyframes cookieFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .cookie-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--color-dark);
+    color: #FFFFFF;
+  }
+
+  .cookie-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .cookie-close-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #FFFFFF;
+    background: transparent;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all var(--transition-fast);
+  }
+
+  .cookie-close-btn:hover {
+    background: #FFFFFF;
+    color: var(--color-dark);
+  }
+
+  .cookie-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cookie-text {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #2D2D2D;
+  }
+
+  .cookie-link {
+    color: var(--color-dark);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  .cookie-link:hover {
+    color: var(--color-gold-bright);
+  }
+
+  .cookie-footer-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .cookie-accept-btn {
+    padding: 8px 22px;
+    font-size: 13px;
+    border-radius: var(--radius-btn);
   }
 </style>

@@ -1,5 +1,6 @@
 ---
 // BookingModal.astro — Модалка бронирования записи подкаста
+import { getAssetUrl } from '../utils/paths';
 ---
 
 <dialog id="bookingModal" class="booking-dialog">
@@ -49,16 +50,19 @@
         <input type="hidden" name="calc_summary" id="bookingCalcHidden" value="" />
       </div>
 
+      <label class="form-consent">
+        <input type="checkbox" name="consent" required checked class="consent-checkbox" />
+        <span class="consent-text">
+          Согласен на <a href={getAssetUrl('/privacy/#consent')} target="_blank" rel="noopener noreferrer">обработку персональных данных</a> и с <a href={getAssetUrl('/privacy/')} target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>
+        </span>
+      </label>
+
       <button type="submit" class="btn-brutal btn-gold submit-btn">
         <span>Отправить заявку</span>
         <span>→</span>
       </button>
 
       <div class="form-status" id="formStatus"></div>
-
-      <p class="form-legal">
-        Нажимая кнопку, вы соглашаетесь с условиями политики конфиденциальности.
-      </p>
     </form>
   </div>
 </dialog>
@@ -228,11 +232,32 @@
     max-height: 110px;
     overflow-y: auto;
   }
-  .form-legal {
-    font-size: 11px;
-    color: #888;
-    text-align: center;
-    line-height: 1.4;
+  .form-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--color-stone);
+    cursor: pointer;
+    user-select: none;
+    margin-top: 4px;
+  }
+  .consent-checkbox {
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0 0;
+    flex-shrink: 0;
+    accent-color: var(--color-gold-bright);
+    cursor: pointer;
+  }
+  .consent-text a {
+    color: var(--color-dark);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  .consent-text a:hover {
+    color: var(--color-gold-bright);
   }
 </style>
 
