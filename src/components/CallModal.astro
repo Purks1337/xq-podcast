@@ -1,0 +1,492 @@
+---
+// CallModal.astro — Модальное окно контактов для ПК: телефон, копирование и ссылки в ЛС мессенджеров
+---
+
+<dialog id="callModal" class="call-dialog" aria-label="Связаться со студией">
+  <div class="call-card">
+    <!-- Шапка модального окна -->
+    <div class="call-head">
+      <div class="call-badge">
+        <span class="badge-star">★</span>
+        <span>ПРЯМАЯ СВЯЗЬ</span>
+      </div>
+      <button type="button" class="btn-close" id="closeCallModalBtn" aria-label="Закрыть окно (Esc)">✕</button>
+    </div>
+
+    <div class="call-intro">
+      <h3 class="call-title">Позвонить или написать в ЛС</h3>
+      <p class="call-subtitle">
+        Студия подкастов «ХВАЛИТЕ QUALITY». Екатеринбург, ул. Ботаническая, 19. На связи ежедневно с 10:00 до 22:00.
+      </p>
+    </div>
+
+    <!-- Блок прямого телефона -->
+    <div class="phone-box">
+      <div class="phone-kicker">
+        <span class="status-dot"></span>
+        <span>ПРЯМОЙ НОМЕР СТУДИИ</span>
+      </div>
+      <div class="phone-number-wrap">
+        <a href="tel:+79923410520" class="phone-number" title="Позвонить">+7 992 341-05-20</a>
+      </div>
+      <div class="phone-actions">
+        <button type="button" class="btn-brutal btn-white copy-btn" id="copyPhoneBtn" data-phone="+79923410520">
+          <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span class="copy-text">Скопировать номер</span>
+        </button>
+        <a href="tel:+79923410520" class="btn-brutal btn-gold call-action-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>Вызов</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Разделитель: напишите в ЛС -->
+    <div class="social-divider">
+      <span class="divider-line"></span>
+      <span class="divider-text">ИЛИ НАПИШИТЕ В ЛИЧНЫЕ СООБЩЕНИЯ</span>
+      <span class="divider-line"></span>
+    </div>
+
+    <!-- Сетка мессенджеров для связи в ЛС -->
+    <div class="messengers-grid">
+      <!-- Telegram -->
+      <a href="https://t.me/hvaliteq" target="_blank" rel="noopener noreferrer" class="messenger-card messenger-card--tg">
+        <div class="messenger-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m22 2-7 20-4-9-9-4Z"/>
+            <path d="M22 2 11 13"/>
+          </svg>
+        </div>
+        <div class="messenger-info">
+          <span class="messenger-name">Telegram</span>
+          <span class="messenger-sub">Написать в личку ↗</span>
+        </div>
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/79923410520" target="_blank" rel="noopener noreferrer" class="messenger-card messenger-card--wa">
+        <div class="messenger-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+          </svg>
+        </div>
+        <div class="messenger-info">
+          <span class="messenger-name">WhatsApp</span>
+          <span class="messenger-sub">Написать в чат ↗</span>
+        </div>
+      </a>
+
+      <!-- MAX -->
+      <a href="https://max.ru/u/f9LHodD0cOJT-TeHrCNk13ow_3qSyo8AgTNJvPhJUqCh7BtiIubqkJt8zaw" target="_blank" rel="noopener noreferrer" class="messenger-card messenger-card--max">
+        <div class="messenger-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            <path d="M8 10h.01M12 10h.01M16 10h.01"/>
+          </svg>
+        </div>
+        <div class="messenger-info">
+          <span class="messenger-name">Мессенджер MAX</span>
+          <span class="messenger-sub">Перейти в диалог ↗</span>
+        </div>
+      </a>
+
+      <!-- VK -->
+      <a href="https://vk.com/im?sel=-208497865" target="_blank" rel="noopener noreferrer" class="messenger-card messenger-card--vk">
+        <div class="messenger-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M13.162 18.994c.609 0 .858-.406.851-.915-.072-1.785.743-2.504 1.706-2.504.664 0 1.258.455 1.637.892 1.05 1.157 1.83 2.527 3.644 2.527h2.002c1.233 0 1.558-.598 1.137-1.57-.455-1.072-1.89-2.617-2.73-3.48-.488-.504-.634-.731 0-1.57.488-.65 2.146-2.926 2.373-3.95.13-.568-.325-.893-.975-.893h-2.097c-.748 0-1.008.358-1.211.829-.39 1.057-1.496 3.024-2.145 3.024-.26 0-.423-.13-.423-.748V9.123c0-.748-.228-1.073-.845-1.073H12.18c-.455 0-.715.342-.715.667 0 .683.975.845.975 2.764v3.17c0 .683-.292.813-.585.813-.78 0-2.682-2.748-3.771-5.918-.276-.796-.552-1.121-1.3-1.121H4.667c-.845 0-1.008.406-1.008.845 0 .813 1.04 4.877 4.844 10.225 2.535 3.593 6.096 5.568 9.324 5.568h.001z"/>
+          </svg>
+        </div>
+        <div class="messenger-info">
+          <span class="messenger-name">ВКонтакте</span>
+          <span class="messenger-sub">Личные сообщения ↗</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Футер модалки -->
+    <div class="call-foot">
+      <span class="online-indicator"></span>
+      <span class="foot-text">Продюсер и команда на связи · отвечаем быстро</span>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .call-dialog {
+    border: none;
+    background: transparent;
+    padding: 16px;
+    max-width: 560px;
+    width: 100%;
+    margin: auto;
+  }
+
+  .call-dialog::backdrop {
+    background: rgba(27, 27, 27, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .call-card {
+    background: #FFFFFF;
+    border: var(--border-dark-thick);
+    border-radius: var(--radius-card-lg);
+    box-shadow: 10px 10px 0px var(--color-dark);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    animation: callPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes callPop {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .call-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .call-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    background: var(--color-gold-bright);
+    color: var(--color-dark);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .badge-star {
+    font-size: 11px;
+  }
+
+  .btn-close {
+    width: 32px;
+    height: 32px;
+    border: var(--border-dark);
+    border-radius: 50%;
+    background: #FAF9F5;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--color-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 0px var(--color-dark);
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .btn-close:hover {
+    background: var(--color-gold-bright);
+    transform: translate(-1px, -1px);
+  }
+
+  .call-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .call-title {
+    font-family: var(--font-accent);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--color-dark);
+    margin: 0;
+    line-height: 1.25;
+  }
+
+  .call-subtitle {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--color-stone);
+    margin: 0;
+  }
+
+  /* Блок телефона */
+  .phone-box {
+    background: #FAF9F5;
+    border: var(--border-dark);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-brutal-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .phone-kicker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--color-stone);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10B981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  }
+
+  .phone-number-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  .phone-number {
+    font-family: var(--font-accent);
+    font-size: clamp(22px, 5vw, 28px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--color-dark);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .phone-number:hover {
+    color: #3358F4;
+  }
+
+  .phone-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .copy-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+    flex: 1 1 180px;
+    cursor: pointer;
+  }
+
+  .copy-btn.is-copied {
+    background: #10B981;
+    color: #FFFFFF;
+    border-color: var(--color-dark);
+  }
+
+  .call-action-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    text-decoration: none;
+    flex: 0 0 auto;
+  }
+
+  /* Разделитель */
+  .social-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 0;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1.5px;
+    background: rgba(27, 27, 27, 0.15);
+  }
+
+  .divider-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--color-stone);
+    white-space: nowrap;
+  }
+
+  /* Сетка мессенджеров */
+  .messengers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .messengers-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .messenger-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #FAF9F5;
+    border: var(--border-dark);
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 2px 0px var(--color-dark);
+    text-decoration: none;
+    color: var(--color-dark);
+    transition: all var(--transition-fast);
+  }
+
+  .messenger-card:hover {
+    background: #FFFFFF;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-dark);
+  }
+
+  .messenger-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1.5px solid var(--color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
+  }
+
+  .messenger-card:hover .messenger-icon {
+    transform: scale(1.08);
+  }
+
+  .messenger-card--tg .messenger-icon {
+    background: #24A1DE;
+    color: #FFFFFF;
+  }
+
+  .messenger-card--wa .messenger-icon {
+    background: #25D366;
+    color: #FFFFFF;
+  }
+
+  .messenger-card--max .messenger-icon {
+    background: var(--color-gold-bright);
+    color: var(--color-dark);
+  }
+
+  .messenger-card--vk .messenger-icon {
+    background: #0077FF;
+    color: #FFFFFF;
+  }
+
+  .messenger-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .messenger-name {
+    font-family: var(--font-accent);
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--color-dark);
+    line-height: 1.2;
+  }
+
+  .messenger-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-stone);
+    margin-top: 2px;
+  }
+
+  /* Футер */
+  .call-foot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(27, 27, 27, 0.15);
+  }
+
+  .online-indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10B981;
+    flex-shrink: 0;
+  }
+
+  .foot-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-stone);
+  }
+</style>
+
+<script>
+  const callModal = document.getElementById('callModal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('closeCallModalBtn');
+  const copyBtn = document.getElementById('copyPhoneBtn');
+
+  // Открытие по кнопкам с data-open-call
+  document.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement)?.closest('[data-open-call]');
+    if (target) {
+      e.preventDefault();
+      callModal?.showModal();
+    }
+  });
+
+  // Закрытие
+  closeBtn?.addEventListener('click', () => callModal?.close());
+  callModal?.addEventListener('click', (e) => {
+    if (e.target === callModal) callModal.close();
+  });
+
+  // Копирование номера
+  copyBtn?.addEventListener('click', async () => {
+    const phone = copyBtn.getAttribute('data-phone') || '+79923410520';
+    const textSpan = copyBtn.querySelector('.copy-text');
+    try {
+      await navigator.clipboard.writeText(phone);
+      copyBtn.classList.add('is-copied');
+      if (textSpan) textSpan.textContent = 'Скопировано! ✓';
+      setTimeout(() => {
+        copyBtn.classList.remove('is-copied');
+        if (textSpan) textSpan.textContent = 'Скопировать номер';
+      }, 2000);
+    } catch {
+      // Фолбэк для старых браузеров
+      const ta = document.createElement('textarea');
+      ta.value = phone;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      copyBtn.classList.add('is-copied');
+      if (textSpan) textSpan.textContent = 'Скопировано! ✓';
+      setTimeout(() => {
+        copyBtn.classList.remove('is-copied');
+        if (textSpan) textSpan.textContent = 'Скопировать номер';
+      }, 2000);
+    }
+  });
+</script>

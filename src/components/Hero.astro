@@ -37,14 +37,27 @@ const heroPoster = getAssetUrl('/assets/photos/lounge/DSC02584.jpg');
             <span>Записать подкаст</span>
           </button>
 
-          <a href="tel:+79923410520" class="btn-brutal btn-white hero-btn-call" title="Позвонить в студию ХВАЛИТЕ QUALITY: +7 992 341-05-20">
+          <!-- Кнопка для ПК: открывает модальное окно с номером и соцсетями в ЛС -->
+          <button type="button" class="btn-brutal btn-white hero-call-desktop" data-open-call aria-label="Позвонить или написать в студию">
             <span class="btn-icon-wrapper">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
             </span>
-            <span class="call-text-desktop">Позвонить: +7 992 341-05-20</span>
-            <span class="call-text-mobile">Позвонить</span>
+            <span>Позвонить</span>
+          </button>
+
+          <!-- Кнопка для мобилки: звоночек со ссылкой на прямой вызов -->
+          <a href="tel:+79923410520" class="btn-brutal btn-white hero-call-mobile" aria-label="Позвонить в студию">
+            <span class="btn-icon-wrapper bell-icon-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" class="bell-ring-icon">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                <path d="M2 8c.7-2.3 2.1-4.2 4-5.5"/>
+                <path d="M22 8c-.7-2.3-2.1-4.2-4-5.5"/>
+              </svg>
+            </span>
+            <span>Позвонить</span>
           </a>
         </div>
 
@@ -248,29 +261,60 @@ const heroPoster = getAssetUrl('/assets/photos/lounge/DSC02584.jpg');
     font-size: 16px;
   }
 
-  .hero-btn-call {
+  /* Кнопки вызова: ПК и Мобилка */
+  .hero-call-desktop {
+    display: none;
     padding: 16px 28px;
     font-size: 16px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--color-dark);
   }
 
-  .call-text-desktop {
-    display: none;
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: -0.01em;
-  }
-
-  .call-text-mobile {
-    display: inline;
+  .hero-call-mobile {
+    display: inline-flex;
+    padding: 16px 28px;
+    font-size: 16px;
+    text-decoration: none;
+    color: var(--color-dark);
   }
 
   @media (min-width: 768px) {
-    .call-text-desktop {
-      display: inline;
+    .hero-call-desktop {
+      display: inline-flex;
     }
-    .call-text-mobile {
+    .hero-call-mobile {
       display: none;
+    }
+  }
+
+  /* Анимация звоночка */
+  .bell-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bell-ring-icon {
+    transform-origin: top center;
+    animation: bellGentlePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes bellGentlePulse {
+    0%, 75%, 100% {
+      transform: rotate(0deg);
+    }
+    80% {
+      transform: rotate(14deg);
+    }
+    85% {
+      transform: rotate(-14deg);
+    }
+    90% {
+      transform: rotate(8deg);
+    }
+    95% {
+      transform: rotate(-8deg);
     }
   }
 
