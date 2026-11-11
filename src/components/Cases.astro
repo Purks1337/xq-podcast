@@ -11,7 +11,6 @@ const rawCases = [
     platformBadge: 'VK ВИДЕО',
     guest: 'Экспертный выпуск в студии',
     format: 'Мультикамерная съёмка 4K · Звук',
-    location: 'Локация Трансформер',
     views: 'VK Видео',
     img: '/assets/cases/case-vk.png',
     videoUrl: 'https://vkvideo.ru/video-208497865_456240560',
@@ -25,7 +24,6 @@ const rawCases = [
     platformBadge: 'RUTUBE',
     guest: 'Студийный диалог · Ч/Б сетап',
     format: '3 камеры 4K · Цветокоррекция',
-    location: 'Локация Лаундж',
     views: 'Rutube',
     img: '/assets/cases/case-rutube.png',
     videoUrl: 'https://rutube.ru/video/7912d6f0161683e562daa0079dc52b3a/?r=wd',
@@ -39,7 +37,6 @@ const rawCases = [
     platformBadge: 'YOUTUBE',
     guest: 'В гостях: Алексей Тагс',
     format: '3 камеры 4K · Неоновый свет · Звук',
-    location: 'Локация Трансформер (сетап Dark)',
     views: 'YouTube',
     img: '/assets/cases/case-youtube.png',
     videoUrl: 'https://youtu.be/otKaLnODjro?si=5PXFeGGYfiyWplak',
@@ -87,7 +84,6 @@ const cases = rawCases.map((c) => ({
             </div>
             <div class="case-top-badges">
               <span class={`badge-platform ${item.platformClass}`}>{item.platformBadge}</span>
-              <span class="badge-loc">{item.location}</span>
             </div>
           </div>
 
@@ -268,9 +264,7 @@ const cases = rawCases.map((c) => ({
     position: absolute;
     top: 12px;
     left: 12px;
-    right: 12px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 8px;
   }
@@ -294,20 +288,6 @@ const cases = rawCases.map((c) => ({
   .platform-youtube {
     background: #FF0000;
     color: #FFFFFF;
-  }
-  .badge-loc {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1.5px solid var(--color-dark);
-    background: #FFFFFF;
-    color: var(--color-dark);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 55%;
   }
   .case-body {
     padding: 20px;
