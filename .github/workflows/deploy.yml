@@ -1,25 +1,16 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy to VPS
 
 on:
-  # Запуск при каждом пуше в ветку main
   push:
     branches: [ main ]
-  # Возможность ручного запуска из вкладки Actions на GitHub
   workflow_dispatch:
 
-# Права доступа для сборки и развертывания GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Предотвращаем конфликты параллельных деплоев
 concurrency:
-  group: "pages"
+  group: "production-deploy"
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -28,27 +19,37 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build site
+      - name: Build site (hybrid mode)
         run: npm run build
+        env:
+          ASTRO_BASE: '/'
+          ASTRO_SITE: 'https://hvalite-quality.ru'
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist/client
+      - name: Deploy to VPS via SSH/rsync
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          HOST: ${{ secrets.VPS_HOST || '2.26.10.12' }}
+          USER: ${{ secrets.VPS_USER || 'root' }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          # Sync built dist and package files to VPS
+          rsync -avz --delete dist/ "${USER}@${HOST}:/var/www/hvalite-quality/dist/"
+          scp package.json package-lock.json "${USER}@${HOST}:/var/www/hvalite-quality/"
+
+          # Set permissions, install production dependencies, restart service and reload nginx
+          ssh "${USER}@${HOST}" "
+            chown -R www-data:www-data /var/www/hvalite-quality/dist
+            cd /var/www/hvalite-quality && npm ci --omit=dev
+            systemctl restart hvalite-quality
+            systemctl reload nginx
+          "

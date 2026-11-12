@@ -1,13 +1,17 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 
+// На боевом домене hvalite-quality.ru базовый путь корневой ('/')
+// При необходимости переопределяется через переменную окружения ASTRO_BASE
 const base = process.env.ASTRO_BASE !== undefined
   ? process.env.ASTRO_BASE
-  : '/xq-podcast';
+  : '/';
+
+const site = process.env.ASTRO_SITE || 'https://hvalite-quality.ru';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://Purks1337.github.io',
+  site,
   base,
   adapter: node({
     mode: 'standalone',
