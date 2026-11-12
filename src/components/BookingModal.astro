@@ -15,7 +15,7 @@ import { getAssetUrl } from '../utils/paths';
       Оставьте контакт — продюсер свяжется в течение 15 минут, подберёт дату и закрепит за вами студийное время.
     </p>
 
-    <form class="booking-form" id="bookingForm">
+    <form class="booking-form" id="bookingForm" data-endpoint={getAssetUrl('/api/lead')}>
       <div class="form-group">
         <label for="bookName" class="form-label">Ваше имя</label>
         <input type="text" id="bookName" name="name" class="form-input" placeholder="Как вас зовут?" required />
@@ -191,6 +191,12 @@ import { getAssetUrl } from '../utils/paths';
     color: #2E7D32;
     border: 1px solid #A5D6A7;
   }
+  .form-status.is-error {
+    display: block;
+    background: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #FFCDD2;
+  }
   .booking-calc-preview {
     background: #FAF9F5;
     border: 2px solid var(--color-dark);
@@ -310,17 +316,135 @@ import { getAssetUrl } from '../utils/paths';
     if (e.target === modal) modal.close();
   });
 
-  form?.addEventListener('submit', (e) => {
+  function getAnalyticsData(): Record<string, string> {
+    const params = new URLSearchParams(window.location.search);
+    const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid', 'gclid', 'vkclid'];
+    let storedUtm: Record<string, string> = {};
+    try {
+      storedUtm = JSON.parse(sessionStorage.getItem('xq_utm') || '{}');
+    } catch {}
+
+    let hasNewUtm = false;
+    utmKeys.forEach((k) => {
+      const val = params.get(k);
+      if (val) {
+        storedUtm[k] = val;
+        hasNewUtm = true;
+      }
+    });
+    if (hasNewUtm) {
+      try { sessionStorage.setItem('xq_utm', JSON.stringify(storedUtm)); } catch {}
+    }
+
+    let landingPage = '';
+    let referrer = '';
+    try {
+      landingPage = sessionStorage.getItem('xq_landing') || window.location.href;
+      if (!sessionStorage.getItem('xq_landing')) {
+        sessionStorage.setItem('xq_landing', landingPage);
+      }
+      referrer = sessionStorage.getItem('xq_referrer') || document.referrer || '';
+      if (!sessionStorage.getItem('xq_referrer') && document.referrer) {
+        sessionStorage.setItem('xq_referrer', referrer);
+      }
+    } catch {}
+
+    let sessionStart = Date.now();
+    try {
+      const storedStart = sessionStorage.getItem('xq_session_start');
+      if (storedStart) {
+        sessionStart = Number(storedStart);
+      } else {
+        sessionStorage.setItem('xq_session_start', String(sessionStart));
+      }
+    } catch {}
+    const secondsOnSite = Math.max(0, Math.round((Date.now() - sessionStart) / 1000));
+    const timeOnSite = secondsOnSite < 60 ? `${secondsOnSite} сек.` : `${Math.floor(secondsOnSite / 60)} мин. ${secondsOnSite % 60} сек.`;
+
+    const ua = navigator.userAgent || '';
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const deviceType = isMobile ? 'Смартфон' : 'Десктоп';
+    const screen = window.screen ? `${window.screen.width}×${window.screen.height}` : '';
+
+    let ymUid = '';
+    const ymMatch = document.cookie.match(/_ym_uid=([^;]+)/);
+    if (ymMatch) ymUid = ymMatch[1];
+
+    const result: Record<string, string> = {
+      landing_page: landingPage,
+      referrer: referrer || 'Прямой заход',
+      device: deviceType + (screen ? ` (${screen})` : ''),
+      time_on_site: timeOnSite,
+      ym_uid: ymUid,
+    };
+    Object.keys(storedUtm).forEach((k) => { result[k] = storedUtm[k]; });
+    return result;
+  }
+
+  try { getAnalyticsData(); } catch {}
+
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitBtn = form.querySelector('.submit-btn') as HTMLButtonElement | null;
+    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+    const endpoint = form.getAttribute('data-endpoint') || '/api/lead';
+
+    const formData = new FormData(form);
+    const data: Record<string, any> = {};
+    formData.forEach((val, key) => {
+      data[key] = val;
+    });
+    data.page = window.location.href;
+    try {
+      Object.assign(data, getAnalyticsData());
+    } catch {}
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Отправка…</span>';
+    }
+
     if (statusEl) {
-      statusEl.className = 'form-status is-success';
-      statusEl.textContent = '✓ Заявка принята! Продюсер свяжется с вами в течение 15 минут.';
+      statusEl.className = 'form-status';
+      statusEl.textContent = '';
+    }
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const resData = await res.json().catch(() => ({}));
+
+      if (!res.ok || !resData.ok) {
+        throw new Error(resData.error || `HTTP ${res.status}`);
+      }
+
+      if (statusEl) {
+        statusEl.className = 'form-status is-success';
+        statusEl.textContent = '✓ Заявка принята! Продюсер свяжется с вами в течение 15 минут.';
+      }
+
       form.reset();
       if (calcBox) calcBox.style.display = 'none';
+
       setTimeout(() => {
         modal?.close();
-        statusEl.className = 'form-status';
-      }, 3000);
+        if (statusEl) statusEl.className = 'form-status';
+      }, 2500);
+    } catch (err: any) {
+      console.error('Booking form error:', err);
+      if (statusEl) {
+        statusEl.className = 'form-status is-error';
+        statusEl.textContent = err?.message || 'Не удалось отправить заявку. Попробуйте ещё раз.';
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
     }
   });
 </script>
