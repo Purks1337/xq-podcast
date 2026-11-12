@@ -6,9 +6,16 @@
   border-top: 2px solid var(--color-dark);
 }
 
+.gallery-section .section-subtitle {
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
 .gallery-tabs-wrap {
   display: flex;
   justify-content: center;
+  width: 100%;
+  margin-top: 6px;
   margin-bottom: 32px;
 }
 
@@ -58,6 +65,53 @@
   color: var(--color-gold-bright);
 }
 
+@media (max-width: 640px) {
+  .gallery-section {
+    padding: 50px 0;
+  }
+
+  .gallery-tabs-wrap {
+    margin-bottom: 20px;
+  }
+
+  .location-tabs {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 12px;
+    flex-direction: column;
+    gap: 3px;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .tab-badge {
+    font-size: 9px;
+    padding: 1px 6px;
+    display: inline-block;
+  }
+}
+
+@media (max-width: 360px) {
+  .tab-btn {
+    font-size: 11px;
+    padding: 6px 4px;
+  }
+  .tab-badge {
+    font-size: 8.5px;
+  }
+}
+
 .studio-panel {
   display: none;
   animation: fadeIn 0.3s ease;
@@ -90,6 +144,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 640px) {
+  .studio-header {
+    padding: 16px 18px;
   }
 }
 
@@ -262,6 +322,33 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   z-index: 2;
+}
+
+@media (max-width: 640px) {
+  .carousel-arrow {
+    width: 38px;
+    height: 38px;
+  }
+  .carousel-arrow--prev { left: 8px; }
+  .carousel-arrow--next { right: 8px; }
+  .carousel-main__caption {
+    font-size: 14px;
+  }
+  .carousel-main__meta {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+  .carousel-main__zoom-btn {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+  .carousel-counter {
+    top: 10px;
+    right: 10px;
+    padding: 3px 8px;
+    font-size: 11px;
+  }
 }
 
 /* Лента миниатюр снизу */

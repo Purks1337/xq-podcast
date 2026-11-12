@@ -246,7 +246,12 @@ const subs = [
     font-weight: 800;
     box-shadow: 2px 2px 0px var(--color-dark);
   }
-  .pricing-toggle-wrap { margin-top: 10px; }
+  .pricing-toggle-wrap { 
+    margin-top: 10px; 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
   .pricing-toggle {
     display: inline-flex;
     background: #FFFFFF;
@@ -286,6 +291,49 @@ const subs = [
     background: var(--color-dark);
     color: var(--color-gold-bright);
   }
+
+  @media (max-width: 640px) {
+    .pricing-toggle {
+      display: flex;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      gap: 4px;
+      padding: 4px;
+    }
+    .toggle-btn {
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: center;
+      padding: 8px 6px;
+      font-size: 13px;
+      flex-direction: column;
+      gap: 3px;
+      text-align: center;
+      white-space: normal;
+    }
+    .discount-pill {
+      font-size: 9px;
+      padding: 1px 6px;
+      white-space: nowrap;
+      display: inline-block;
+    }
+    .section-title {
+      font-size: 26px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .toggle-btn {
+      font-size: 12px;
+      padding: 6px 4px;
+    }
+    .discount-pill {
+      font-size: 8px;
+      padding: 1px 4px;
+    }
+  }
+
   .pricing-grid {
     display: none;
     grid-template-columns: 1fr;
@@ -298,6 +346,11 @@ const subs = [
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 640px) {
+    .pricing-grid {
+      gap: 16px;
+    }
   }
   @media (min-width: 640px) {
     .pricing-grid { grid-template-columns: repeat(2, 1fr); }
@@ -483,6 +536,25 @@ const subs = [
     font-weight: 800;
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .price-card {
+      padding: 20px 16px;
+    }
+    .card-title {
+      font-size: 18px;
+    }
+    .price-main {
+      font-size: 22px;
+    }
+    .pricing-calc-callout {
+      padding: 18px 16px;
+    }
+    .callout-btn {
+      width: 100%;
+      justify-content: center;
+    }
   }
 </style>
 

@@ -200,11 +200,17 @@ const cases = rawCases.map((c) => ({
   .cases-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 20px;
     margin-bottom: 40px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 680px) {
+    .cases-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 960px) {
     .cases-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .section-title { font-size: 26px; }
   }
   .case-card {
     background: #FFFFFF;
