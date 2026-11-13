@@ -52,7 +52,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -63,7 +63,7 @@ body {
   background-image: 
     radial-gradient(rgba(27, 27, 27, 0.04) 1px, transparent 1px);
   background-size: 24px 24px;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
 }
 
@@ -102,6 +102,12 @@ img, svg {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
 }
 
 @media (min-width: 768px) {

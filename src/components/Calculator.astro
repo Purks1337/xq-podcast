@@ -458,13 +458,15 @@
   /* Layout */
   .calc-layout {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 30px;
     align-items: start;
+    width: 100%;
+    min-width: 0;
   }
   @media (min-width: 1024px) {
     .calc-layout {
-      grid-template-columns: 1fr 420px;
+      grid-template-columns: minmax(0, 1fr) 420px;
       gap: 36px;
     }
   }
@@ -474,6 +476,8 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    width: 100%;
+    min-width: 0;
   }
   .control-block {
     background: #FFFFFF;
@@ -482,6 +486,9 @@
     box-shadow: var(--shadow-brutal);
     padding: 24px;
     transition: box-shadow 0.2s ease;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .control-block:hover {
     box-shadow: var(--shadow-brutal-hover);
@@ -521,14 +528,17 @@
   /* Service Cards */
   .service-cards {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   @media (min-width: 580px) {
-    .service-cards { grid-template-columns: repeat(2, 1fr); }
+    .service-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (min-width: 768px) {
-    .service-cards { grid-template-columns: repeat(3, 1fr); }
+    .service-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   .service-card {
     text-align: left;
@@ -542,6 +552,9 @@
     flex-direction: column;
     gap: 6px;
     transition: all 0.15s ease;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .service-card:hover {
     transform: translate(-2px, -2px);
@@ -561,6 +574,7 @@
     font-weight: 800;
     color: var(--color-dark);
     line-height: 1.25;
+    word-break: break-word;
   }
   .service-hint {
     font-size: 11px;
@@ -575,6 +589,9 @@
   /* Parameter Rows & Chips */
   .param-row {
     margin-bottom: 18px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .param-row:last-child {
     margin-bottom: 0;
@@ -583,13 +600,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
     margin-bottom: 10px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .param-label {
     font-family: var(--font-accent);
     font-size: 13px;
     font-weight: 700;
     color: var(--color-dark);
+    min-width: 0;
+    line-height: 1.3;
   }
   .param-value-badge {
     font-family: var(--font-mono);
@@ -600,11 +624,16 @@
     padding: 2px 8px;
     border-radius: var(--radius-pill);
     color: var(--color-dark);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .chips-group {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .chip-btn {
     padding: 8px 16px;
@@ -618,6 +647,7 @@
     box-shadow: 2px 2px 0px var(--color-dark);
     cursor: pointer;
     transition: all 0.15s ease;
+    box-sizing: border-box;
   }
   .chip-btn:hover {
     transform: translate(-1px, -1px);
@@ -633,9 +663,12 @@
   /* Styled Selects */
   .custom-select-wrap {
     width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .form-select-styled {
     width: 100%;
+    max-width: 100%;
     padding: 10px 14px;
     border: 2px solid var(--color-dark);
     border-radius: var(--radius-sm);
@@ -647,6 +680,7 @@
     box-shadow: 2px 2px 0px var(--color-dark);
     outline: none;
     cursor: pointer;
+    box-sizing: border-box;
   }
   .form-select-styled:focus {
     background: #FFFFFF;
@@ -691,6 +725,9 @@
     text-align: left;
     cursor: pointer;
     transition: all 0.15s ease;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .edit-option:hover {
     transform: translate(-1px, -1px);
@@ -723,7 +760,10 @@
     background: var(--color-gold-bright);
     box-shadow: 0 0 0 1px var(--color-dark);
   }
-  .edit-info { flex: 1; }
+  .edit-info {
+    flex: 1;
+    min-width: 0;
+  }
   .edit-title {
     display: block;
     font-family: var(--font-accent);
@@ -754,11 +794,14 @@
   /* Addons Grid */
   .addons-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   @media (min-width: 640px) {
-    .addons-grid { grid-template-columns: repeat(2, 1fr); }
+    .addons-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   .addon-item {
     background: #FAF9F5;
@@ -770,8 +813,14 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
-  .addon-info { flex: 1; }
+  .addon-info {
+    flex: 1;
+    min-width: 0;
+  }
   .addon-title {
     display: block;
     font-family: var(--font-accent);
@@ -867,6 +916,10 @@
   .calc-sidebar {
     position: sticky;
     top: 90px;
+    align-self: start;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .receipt-card {
     background: #FFFFFF;
@@ -877,6 +930,9 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .receipt-top {
     display: flex;
@@ -1027,6 +1083,9 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
   }
   .btn-arrow { font-size: 18px; font-weight: 900; }
   .btn-copy-calc {
@@ -1045,6 +1104,10 @@
     gap: 8px;
     cursor: pointer;
     transition: all 0.15s ease;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
   }
   .btn-copy-calc:hover {
     background: #FFFFFF;
@@ -1065,28 +1128,302 @@
   }
 
   @media (max-width: 640px) {
+    .calc-section {
+      padding: 44px 0 54px;
+    }
+    .section-head {
+      margin-bottom: 22px;
+      gap: 8px;
+    }
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+    .section-title {
+      font-size: 24px;
+      line-height: 1.2;
+    }
+    .section-subtitle {
+      font-size: 13.5px;
+      line-height: 1.45;
+      padding: 0;
+    }
+    .calc-layout {
+      gap: 18px;
+    }
+    .calc-controls {
+      gap: 14px;
+    }
     .control-block {
-      padding: 18px 14px;
+      padding: 16px 14px;
+      border-radius: 14px;
+      box-shadow: 2.5px 2.5px 0px var(--color-dark);
     }
     .block-header {
       flex-wrap: wrap;
       gap: 8px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+    }
+    .block-num {
+      font-size: 11px;
+      padding: 2px 7px;
     }
     .block-title {
-      font-size: 16px;
+      font-size: 15px;
+    }
+    .block-subtag {
+      font-size: 10px;
+      margin-left: 0;
+      width: 100%;
+    }
+    .service-cards {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+    .service-card {
+      padding: 12px 12px;
+      gap: 4px;
+      border-radius: 10px;
+    }
+    .service-icon {
+      font-size: 20px;
+    }
+    .service-name {
+      font-size: 13.5px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+    .service-hint {
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .param-row {
+      margin-bottom: 14px;
+    }
+    .param-label-group {
+      margin-bottom: 8px;
+      gap: 6px;
+    }
+    .param-label {
+      font-size: 12px;
+    }
+    .param-value-badge {
+      font-size: 10px;
+      padding: 2px 7px;
+    }
+    .chips-group {
+      gap: 6px;
     }
     .chip-btn {
       font-size: 11px;
       padding: 6px 10px;
+      box-shadow: 1.5px 1.5px 0px var(--color-dark);
     }
-    .receipt-card {
-      padding: 18px 14px;
+    .form-select-styled {
+      font-size: 12.5px;
+      padding: 8px 10px;
+    }
+    .delivery-notice {
+      padding: 10px 12px;
+      gap: 8px;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+    .notice-icon {
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .notice-text {
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    .edit-option {
+      padding: 12px 12px;
+      gap: 10px;
+      align-items: flex-start;
+      border-radius: 10px;
+    }
+    .edit-radio {
+      margin-top: 2px;
+    }
+    .edit-title {
+      font-size: 13px;
+    }
+    .edit-desc {
+      font-size: 10.5px;
+      line-height: 1.35;
+    }
+    .edit-price {
+      font-size: 12px;
+      align-self: flex-start;
+    }
+    .raw-footage-wrap {
+      margin-top: 14px;
+      padding-top: 14px;
+    }
+    .addons-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+    .addon-item {
+      padding: 10px 12px;
+      gap: 10px;
+      border-radius: 10px;
+    }
+    .addon-title {
+      font-size: 12px;
+    }
+    .addon-price {
+      font-size: 10.5px;
+    }
+    .counter-btn {
+      width: 26px;
+      height: 26px;
+      font-size: 13px;
+    }
+    .counter-val {
+      font-size: 12px;
+      min-width: 22px;
+    }
+    .toggle-switch {
+      width: 40px;
+      height: 22px;
+    }
+    .toggle-slider::before {
+      height: 12px;
+      width: 12px;
+      left: 3px;
+      bottom: 3px;
+    }
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(16px);
+    }
+    .addon-item--select {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .addon-item--select .form-select-sm {
+      max-width: 100%;
+      width: 100%;
+      font-size: 12px;
+      padding: 8px 10px;
     }
     .calc-sidebar {
       position: static;
+      margin-top: 6px;
     }
-    .service-cards {
-      grid-template-columns: 1fr;
+    .receipt-card {
+      padding: 16px 14px;
+      border-radius: 16px;
+      box-shadow: 3px 3px 0px var(--color-dark);
+    }
+    .receipt-top {
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .receipt-badge {
+      font-size: 10px;
+      padding: 3px 8px;
+    }
+    .btn-reset {
+      font-size: 10px;
+      padding: 3px 8px;
+    }
+    .receipt-title {
+      font-size: 18px;
+    }
+    .receipt-subtitle {
+      font-size: 11.5px;
+      margin-bottom: 12px;
+    }
+    .receipt-items-wrap {
+      padding: 10px 0;
+      margin-bottom: 14px;
+      max-height: 220px;
+    }
+    :global(.receipt-line) {
+      font-size: 11.5px;
+      gap: 8px;
+    }
+    :global(.receipt-line-name) {
+      font-size: 11.5px;
+    }
+    :global(.receipt-line-price) {
+      font-size: 11.5px;
+    }
+    .grand-total-block {
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 4px;
+    }
+    .grand-total-label {
+      font-size: 11px;
+    }
+    .grand-total-price {
+      font-size: 26px;
+      word-break: break-word;
+    }
+    .receipt-actions {
+      gap: 8px;
+    }
+    .receipt-book-btn {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 13px;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.3;
+      gap: 8px;
+    }
+    .receipt-book-btn .btn-arrow {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .btn-copy-calc {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 11.5px;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .receipt-footer-note {
+      font-size: 10.5px;
+      margin-top: 10px;
+      line-height: 1.35;
+    }
+  }
+
+  /* Для сверхмалых экранов (iPhone SE, Galaxy Fold 320-375px) */
+  @media (max-width: 380px) {
+    .control-block {
+      padding: 14px 10px;
+    }
+    .receipt-card {
+      padding: 14px 10px;
+    }
+    .chip-btn {
+      font-size: 10px;
+      padding: 5px 8px;
+    }
+    .section-title {
+      font-size: 21px;
+    }
+    .block-title {
+      font-size: 14px;
+    }
+    .grand-total-price {
+      font-size: 22px;
+    }
+    .receipt-book-btn {
+      font-size: 12px;
+      padding: 10px 8px;
+    }
+    .service-card {
+      padding: 10px 10px;
     }
   }
 </style>
