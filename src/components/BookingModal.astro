@@ -426,6 +426,11 @@ import { getAssetUrl } from '../utils/paths';
         statusEl.className = 'form-status is-success';
         statusEl.textContent = '✓ Заявка принята! Продюсер свяжется с вами в течение 15 минут.';
       }
+      try {
+        if (typeof (window as any).ym === 'function') {
+          (window as any).ym(114300600, 'reachGoal', 'lead_form');
+        }
+      } catch {}
 
       form.reset();
       if (calcBox) calcBox.style.display = 'none';
